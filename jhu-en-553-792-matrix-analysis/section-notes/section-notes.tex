@@ -23,6 +23,7 @@
 \newcommand{\C}{\ensuremath{\mathbb C}}
 \newcommand{\N}{\ensuremath{\mathbb N}}
 \newcommand{\F}{\ensuremath{\mathbb F}}
+\newcommand{\EV}{\ensuremath{\mathbb E}}
 \newcommand{\e}{\epsilon}
 \newcommand{\E}{\exists}
 \newcommand{\sse}{\subseteq}
@@ -45,7 +46,7 @@
 \theoremstyle{remark}
 \newtheorem{exm}{Example}[section]
 \newtheorem{exc}{Exercise}[section]
-\newtheorem{rem}{Remark}
+\newtheorem{rem}{Remark}[section]
 \newtheorem{question}{Question}
 \newtheorem{answer}{Answer}
 
@@ -81,7 +82,7 @@
     \item (Optional) Make connections to ideas from statistics or optimization.
     \item Answer any questions that you have.
 \end{itemize}
-{\bf Note:} I will prepare material for each section, but your questions are universally more important that whatever I prepare, so please ask them.
+{\bf Note:} I will prepare material for each section, but your questions are universally more important than whatever I prepare, so please ask them.
 \subsection{Algorithm for success}
 \begin{enumerate}
     \item Attend every class.
@@ -437,7 +438,7 @@ If $A = A^T$, then it is real orthogonally diagonalizable, with the eigenvectors
     \label{fig:proj}
 \end{figure}
 
-\subsection*{Application: Unconstrained Optimization}
+\subsection*{Application: numerical optimization}
 
 Let $f: \R^d \rightarrow \R$ be a twice-differentiable function, with
 \begin{align*}
@@ -506,6 +507,184 @@ As a final message: in applications related to mathematical data science, when w
 \end{enumerate}
 
 By approximately low-rank, we mean eigenvalues (or more generally, singular values) small in magnitude. The second question we will be able to attack more after Chapter 7 and 5, but the first we can start understanding now. 
+
+\section{October 15, 2019}
+
+\subsection*{Announcements}
+
+Exam 1 just passed, and I unfortunately do not have the answer to the following questions.
+\begin{itemize}
+    \item I got grade $x$ on Exam 1, will I still be able to get grade $y$ in the class?
+    \item Are Exams 2 and 3 easier than Exam 1?
+\end{itemize}
+The first question I will direct to Dr. Fishkind, while for the second, the best answer I can offer is that I looked at the exam scores from last years, and students performed statistically significantly better on Exam 2 and 3 than on Exam 1. However, operationally, the average was 4 points higher on Exam 2 and 8 points higher on Exam 3, so take that as you will. It is likely that students' expectations are better calibrated for future exams, rather than them being easier.
+
+\subsection*{Some chapter 4 results}
+
+\begin{thm}
+    Let $A \in M_n$ be Normal. Let $F(A) = \{\frac{x^* A x}{x^* x} : x \in \C^n \backslash \{0\}\}$. Then $F(A) = \mathcal{H}(A)$, where $\mathcal{H}(\cdot)$ denotes the spectrum.
+\end{thm}
+
+\begin{thm}[Rayleigh-Ritz]
+    Let $A \in M_n$ be Hermitian, with (orthonormal) eigenvectors $u_1, ..., u_k$, associated with $\lambda_1 \leq ... \leq \lambda_n$. For $k = 1, ..., n$, we have:
+    \begin{align*}
+        \min_{\substack{x \neq 0 \\ x \perp u_1 ,..., u_{k-1}}} \frac{x^* A x}{x^* x} &= \lambda_k\\
+        \max_{\substack{x \neq 0 \\ x \perp u_{k+1} ,..., u_n}} \frac{x^* A x}{x^* x} &= \lambda_k
+    \end{align*}
+\end{thm}
+\begin{proof}
+    We'll prove the maximum case. Represent any such $x$ as
+    \begin{align*}
+        x = \delta_{1} u_{1} + ... + \delta_k u_k = \sum_{i=1}^k \delta_i u_i
+    \end{align*}
+    with not all $\delta_i$ equal to 0. Let $A = UDU^*$ be the unitary diagonalization.
+    \begin{align*}
+        \max_{\substack{x \neq 0 \\ x \perp u_{k+1} ,..., x_n}} \frac{x^* A x}{x^* x} &= \max_{\delta_1, ..., \delta_k} \frac{(\sum_{i=1}^k \delta_i u_i)^* U D U^* \sum_{i=1}^k \delta_i u_i}{(\sum_{i=1}^k \delta_i)^* (\sum_{i=1}^k \delta_i)}\\
+        &= \max_{\delta_1, ..., \delta_k} \frac{(\sum_{i=1}^k \overline{\delta_i} u_i^* U) D (\sum_{i=1}^k \delta_i U^* u_i)}{\sum_{i=1}^k \overline{\delta_i} \delta_i}\\
+        &= \max_{\delta_1, ..., \delta_k}
+        \begin{bmatrix}
+            \overline{\delta_1} & \ldots & \overline{\delta_k} & 0 & \ldots & 0
+        \end{bmatrix}
+        \begin{bmatrix}
+            \lambda_1 & & & & &\\
+            & \ddots & & & &\\
+            & & \lambda_k & & &\\
+            & & & \lambda_{k+1} & &\\
+            & & & & \ddots &\\
+            & & & & & \lambda_n
+        \end{bmatrix}
+        \begin{bmatrix}
+            \delta_1 \\ \vdots \\ \delta_k \\ 0 \\ \vdots \\ 0
+        \end{bmatrix}\\
+        &= \max_{\delta_1, ..., \delta_k} \sum_{i=1}^k \frac{|\delta_i|^2}{\sum_{j=1}^k |\delta_j|^2} \lambda_i\\
+        &= \lambda_k
+    \end{align*}
+\end{proof}
+
+\begin{thm}[Courant-Fischer]
+    Let $A \in M_n$ be Hermitian. Then
+    \begin{align*}
+        \max_{y_1 ,..., y_{k-1}} \phi_{\min}(y_1, ..., y_{k-1}) = \max_{y_1 ,..., y_{k-1}} \min_{\substack{x \neq 0 \\ x \perp y_1 ,..., y_{k-1}}} \frac{x^* A x}{x^* x} &= \lambda_k\\
+        \min_{y_{k+1} ,..., y_n} \phi_{\max}(y_{k+1}, ..., y_n) = \min_{y_{k+1} ,..., y_n} \max_{\substack{x \neq 0 \\ x \perp y_{k+1} ,..., y_n}} \frac{x^* A x}{x^* x} &= \lambda_k
+    \end{align*}
+\end{thm}
+\begin{proof}
+    We show the first equality. Noting that $y_1, ..., y_{k-1}$ are not necessarily linearly independent, and letting $u_1, ..., u_k, ..., u_n$ be the eigenvectors of $\lambda_1 \leq ... \leq \lambda_k \leq ... \leq \lambda_n$, we have
+    \begin{align*}
+        \text{dim} \ \text{span}\{y_1, ..., y_{k-1}\} &\leq k - 1\\
+        \implies \text{dim} \ \text{span}\{y_1, ..., y_{k-1}\}^{\perp} &\geq n - (k - 1) = n - k + 1\\
+        \text{dim} \ \text{span}\{u_1, ..., u_k\} &= k\\
+    \end{align*}
+    Thus
+    \begin{align*}
+        \text{dim} \ \text{span}\{y_1, ..., y_{k-1}\}^{\perp} + \text{dim} \ \text{span}\{u_1, ..., u_k\} \geq n + 1
+    \end{align*}
+    So the intersection $\text{span}\{y_1, ..., y_{k-1}\}^{\perp} \cap \text{span}\{u_1, ..., u_k\}$ must have some nonzero vectors. Let $w \neq 0$ be one such vector. We have
+    \begin{align*}
+        w \perp u_{k+1}, ..., u_n,
+    \end{align*}
+    and so by Rayleigh-Ritz,
+    \begin{align*}
+        \frac{w^* A w}{w^* w} \leq \lambda_k \implies \min_{\substack{w \neq 0 \\ w \perp y_1 ,..., y_{k-1} \\ w \perp u_{k+1}, ..., u_n}} \frac{w^* A w}{w^* w} \leq \lambda_k
+    \end{align*}
+    This also means that
+    \begin{align*}
+        \phi_{\min}(y_1, ..., y_{k-1}) = \min_{\substack{x \neq 0 \\ x \perp y_1 ,..., y_{k-1}}} \frac{x^* A x}{x^* x} \leq \min_{\substack{w \neq 0 \\ w \perp y_1 ,..., y_{k-1} \\ w \perp u_{k+1}, ..., u_n}} \frac{w^* A w}{w^* w} \leq \lambda_k
+    \end{align*}
+    and thus we have found an upper bound for $\phi_{\min}(y_1, ..., y_{k-1})$. Setting $y_1 = u_1, ..., y_{k-1} = u_{k-1}$, we achieve this upper bound, and thus
+    \begin{align*}
+        \max_{y_1 ,..., y_{k-1}} \phi_{\min}(y_1, ..., y_{k-1}) = \max_{y_1 ,..., y_{k-1}} \min_{\substack{x \neq 0 \\ x \perp y_1 ,..., y_{k-1}}} \frac{x^* A x}{x^* x} &= \lambda_k\\
+    \end{align*}
+    as desired. As for the second equality (which is entirely analogous), we have
+    \begin{align*}
+        \text{dim} \ \text{span}\{y_{k+1}, ..., y_n\} &\leq n - k\\
+        \implies \text{dim} \ \text{span}\{y_{k+1}, ..., y_n\}^{\perp} &\geq n - (n - k) = k\\
+        \text{dim} \ \text{span}\{u_k, ..., u_n\} &= n - k + 1\\
+    \end{align*}
+    Thus
+    \begin{align*}
+        \text{dim} \ \text{span}\{y_{k+1}, ..., y_n\}^{\perp} + \text{dim} \ \text{span}\{u_k, ..., u_n\} \geq n + 1
+    \end{align*}
+    So the intersection $\text{span}\{y_{k+1}, ..., y_n\}^{\perp} \cap \text{span}\{u_k, ..., u_n\}$ must have some nonzero vectors. Let $w \neq 0$ be one such vector. We have
+    \begin{align*}
+        w \perp u_1, ..., u_{k-1},
+    \end{align*}
+    and so by Rayleigh-Ritz,
+    \begin{align*}
+        \frac{w^* A w}{w^* w} \geq \lambda_k \implies \max_{\substack{w \neq 0 \\ w \perp y_{k+1} ,..., y_n \\ w \perp u_1, ..., u_{k-1}}} \frac{w^* A w}{w^* w} \geq \lambda_k
+    \end{align*}
+    This also means that
+    \begin{align*}
+        \phi_{\max}(y_{k+1}, ..., y_n) = \max_{\substack{x \neq 0 \\ x \perp y_{k+1}, ..., y_n}} \frac{x^* A x}{x^* x} \geq \max_{\substack{w \neq 0 \\ w \perp y_{k+1}, ..., y_n \\ w \perp u_1, ..., u_{k-1}}} \frac{w^* A w}{w^* w} \geq \lambda_k
+    \end{align*}
+    and thus we have found a lower bound for $\phi_{\max}(y_{k+1}, ..., y_n)$. Setting $y_{k+1} = u_{k+1}, ..., y_n = u_n$, we achieve this lower bound, and thus
+    \begin{align*}
+        \min_{y_{k+1},..., y_n} \phi_{\max}(y_{k+1}, ..., y_n) = \min_{y_{k+1},..., y_n} \max_{\substack{x \neq 0 \\ x \perp y_{k+1}, ..., y_n}} \frac{x^* A x}{x^* x} &= \lambda_k\\
+    \end{align*}
+    as desired.
+\end{proof}
+
+\begin{thm}[Weyl]
+    Let $A, B \in M_n$ be Hermitian. Then, for all $k$
+    \begin{align*}
+        \lambda_k(A) + \lambda_1(B) \leq \lambda_k(A + B) \lambda_k(A) + \lambda_n(B)
+    \end{align*}
+    where $\lambda_i(A)$ is the $i$-th smallest eigenvalue of $A$.
+\end{thm}
+
+\begin{coro}
+    Let $A, B \in M_n$ be P.S.D.. Then for all $k$,
+    \begin{align*}
+        \lambda_k(A) \leq \lambda_k(A + B)
+    \end{align*}
+\end{coro}
+
+\begin{rem}
+    For $a \in \{-1, 1\}, y \in \C^n \backslash \{0\}$, $ayy^*$ is a rank 1 Hermitian matrix. Any rank 1 Hermitian matrix can be written as such.
+\end{rem}
+\begin{thm}[Interlacing I]
+    For $A$ Hermitian, $a \in \{-1, 1\}, y \in \C^n \backslash \{0\}$, then for all $k$,
+    \begin{align*}
+        \lambda_k(A + ayy^*) \leq \lambda_{k+1}(A) 
+    \end{align*}
+\end{thm}
+
+\begin{thm}[Interlacing II]
+    Let $A \in M_n$ be Hermitian, $B \in M_r$ be a principal submatrix of $A$. Then for all $k$ such that $1 \leq k \leq r$,
+    \begin{align*}
+        \lambda_k(A) \leq \lambda_k(B) \leq \lambda_{k+n-r}(A)
+    \end{align*}
+\end{thm}
+
+\begin{coro}
+    If $A \in M_n$ is Hermitian, and $a_{ii}$ is on the diagonal, then
+    \begin{align*}
+        \lambda_1(A) \leq a_{ii} \leq \lambda_n
+    \end{align*}
+\end{coro}
+
+\subsection*{Application: multivariate statistics}
+
+In the interest of time, and the fact that there are many resources on this subject, we may not go over the statistics example fully in class. However, here is the setup and the questions, and you can answer them on your own and discuss in office hours!
+
+Let $x: \Omega \rightarrow \R^d$ and $x \in \R^d$ both represent a $d$-dimensional random variable and its realization. The distinction should be clear from context. Let $\EV[x] = \mu$ be the mean and $\text{Cov}[x] = \EV[(x - \mu)(x - \mu)^T] = \Sigma$ be the (Hermitian) covariance matrix.
+\begin{enumerate}
+    \item Prove that $\Sigma$ is P.S.D.. Why is it not P.D. in general?
+    \item Interpret the eigenvectors, eigenvalues, and diagonal matrix $D$.
+    \item Let $x \sim \mathcal{N}(\mu, \Sigma)$. Prove that $\Sigma$ is in fact P.D.. Plot the probability density function for $d = 2$ and use the optimization example to interpret the shape.
+    \begin{itemize}
+        \item Why does a large eigenvalue $\lambda_k$ correspond to a large spread in $u_k$ (meaning large value of $\text{Var}(||\text{proj}_{u_k}(x)||)$). 
+        \item For what values of the spectrum of $\Sigma$ are the level sets spherical versus oblong?
+        \item When are the major axes of the level sets aligned with the coordinate axes?
+    \end{itemize}
+    \item If $x \sim \mathcal{N}(\mu, \Sigma)$ and $\Sigma = UDU^T$, what is the distribution of $z = U^T x$? Interpret $z$.
+    \item Let $X \in M_{n, d}(\R)$ be a data matrix, where each row $x^T_i$ is an independent observation of $x$. Assume for simplicity that $\EV[x] = 0$. Finally, let $X^T X = \hat{U} \hat{D}\hat{U}^T$ be an estimate of the unitary diagonalization of $\Sigma$. Consider two dimension reduction routines.
+    \begin{itemize}
+        \item Represent the data as $Z = X\hat{U}$, i.e. the principal components of $X$. Then, drop $d - r$ columns by some method.
+        \item Drop columns from the {\it original} data matrix $X$ to $X_r$, then orthogonalize the reduced covariance matrix $X_r^T X_r = \hat{U}_r \hat{D}_r\hat{U}^T_r$. Represent the reduced data as $Z_r = X_r \hat{U}_r$.
+    \end{itemize}
+    What is the conceptual difference between these two methods, that is, orthogonalizing and then dropping columns (of which PCA is an example) or vice versa? (Hint: use Interlacing II.)
+\end{enumerate}
 
 \end{document}
 
