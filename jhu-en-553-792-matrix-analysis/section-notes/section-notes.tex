@@ -678,10 +678,10 @@ Let $x: \Omega \rightarrow \R^d$ and $x \in \R^d$ both represent a $d$-dimension
         \item When are the major axes of the level sets aligned with the coordinate axes?
     \end{itemize}
     \item If $x \sim \mathcal{N}(\mu, \Sigma)$ and $\Sigma = UDU^T$, what is the distribution of $z = U^T x$? Interpret $z$.
-    \item Let $X \in M_{n, d}(\R)$ be a data matrix, where each row $x^T_i$ is an independent observation of $x$. Assume for simplicity that $\EV[x] = 0$. Finally, let $X^T X = \hat{U} \hat{D}\hat{U}^T$ be an estimate of the unitary diagonalization of $\Sigma$. Consider two dimension reduction routines.
+    \item Let $X \in M_{n, d}(\R)$ be a data matrix, where each row $x^T_i$ is an independent observation of $x$. Assume for simplicity that $\EV[x] = 0$. Finally, let $\frac{1}{n} X^T X = \hat{U} \hat{D}\hat{U}^T$ be an estimate of the unitary diagonalization of $\Sigma$. Consider two dimension reduction routines.
     \begin{itemize}
         \item Represent the data as $Z = X\hat{U}$, i.e. the principal components of $X$. Then, drop $d - r$ columns by some method.
-        \item Drop columns from the {\it original} data matrix $X$ to $X_r$, then orthogonalize the reduced covariance matrix $X_r^T X_r = \hat{U}_r \hat{D}_r\hat{U}^T_r$. Represent the reduced data as $Z_r = X_r \hat{U}_r$.
+        \item Drop columns from the {\it original} data matrix $X$ to $X_r$, then orthogonalize the reduced covariance matrix $\frac{1}{n} X_r^T X_r = \hat{U}_r \hat{D}_r\hat{U}^T_r$. Represent the reduced data as $Z_r = X_r \hat{U}_r$.
     \end{itemize}
     What is the conceptual difference between these two methods, that is, orthogonalizing and then dropping columns (of which PCA is an example) or vice versa? (Hint: use Interlacing II.)
 \end{enumerate}
