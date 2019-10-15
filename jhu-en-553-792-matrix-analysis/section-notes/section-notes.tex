@@ -431,7 +431,7 @@ The matrix has annihilating polynomial $p(t) = t(t-1)$, therefore any eigenvalue
 \end{enumerate}
 If $A = A^T$, then it is real orthogonally diagonalizable, with the eigenvectors forming an orthonormal basis. This idea is depicted in Figure \ref{fig:proj}. The transformation $A$ is called a projection matrix. The next topic will make use of ideas from Chapters 0 through 4.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
     \includegraphics[width=0.6\linewidth]{figures/projection.png}
     \caption{Here ${\bf x} \in \R^3$ is the vector of interest and ${\bf P} \in M_3(\R)$ is the projection matrix. If we ${\bf P} = SDS^{-1}$ let ${\bf A}$ be the $M_{3,2}(\R)$ matrix that column binds the eigenvectors of ${\bf P}$ associated to eigenvalue 1, then the subspace column space of ${\bf A}$.}
@@ -455,7 +455,7 @@ Our goal is to find such a local minimum, and we write this problem as
 \end{align*}
 
 There are many ways to go about this, but one such was is to iteratively propose candidate solutions $x_1, x_2, ...$ that get ``closer" to a local minimum $x^*$. A subset of these methods is line-search methods, where at iterate $x_t$, we choose a search direction $p \in \R^d$ and step size $\alpha \in [0, 1)$, and let $x_{t+1} = x_t + \alpha p$. For example, in gradient descent, we let $p = - g(x_t)$, as in Figure \ref{fig:grad}.
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
     \includegraphics[width=0.5\linewidth]{figures/grad.png}
     \caption{The center of the contour plot is the local minimum.}
@@ -526,7 +526,7 @@ The first question I will direct to Dr. Fishkind, while for the second, the best
 \end{thm}
 
 \begin{thm}[Rayleigh-Ritz]
-    Let $A \in M_n$ be Hermitian, with (orthonormal) eigenvectors $u_1, ..., u_k$, associated with $\lambda_1 \leq ... \leq \lambda_n$. For $k = 1, ..., n$, we have:
+    Let $A \in M_n$ be Hermitian, with (orthonormal) eigenvectors $u_1, ..., u_n$, associated with $\lambda_1 \leq ... \leq \lambda_n$. For $k = 1, ..., n$, we have:
     \begin{align*}
         \min_{\substack{x \neq 0 \\ x \perp u_1 ,..., u_{k-1}}} \frac{x^* A x}{x^* x} &= \lambda_k\\
         \max_{\substack{x \neq 0 \\ x \perp u_{k+1} ,..., u_n}} \frac{x^* A x}{x^* x} &= \lambda_k
@@ -625,15 +625,15 @@ The first question I will direct to Dr. Fishkind, while for the second, the best
 \end{proof}
 
 \begin{thm}[Weyl]
-    Let $A, B \in M_n$ be Hermitian. Then, for all $k$
+    Let $A, B \in M_n$ be Hermitian. Then, for all $k = 1, ..., n$
     \begin{align*}
-        \lambda_k(A) + \lambda_1(B) \leq \lambda_k(A + B) \lambda_k(A) + \lambda_n(B)
+        \lambda_k(A) + \lambda_1(B) \leq \lambda_k(A + B) \leq \lambda_k(A) + \lambda_n(B)
     \end{align*}
     where $\lambda_i(A)$ is the $i$-th smallest eigenvalue of $A$.
 \end{thm}
 
 \begin{coro}
-    Let $A, B \in M_n$ be P.S.D.. Then for all $k$,
+    Let $A, B \in M_n$ be P.S.D.. Then for all $k = 1, ..., n$,
     \begin{align*}
         \lambda_k(A) \leq \lambda_k(A + B)
     \end{align*}
@@ -673,7 +673,7 @@ Let $x: \Omega \rightarrow \R^d$ and $x \in \R^d$ both represent a $d$-dimension
     \item Interpret the eigenvectors, eigenvalues, and diagonal matrix $D$.
     \item Let $x \sim \mathcal{N}(\mu, \Sigma)$. Prove that $\Sigma$ is in fact P.D.. Plot the probability density function for $d = 2$ and use the optimization example to interpret the shape.
     \begin{itemize}
-        \item Why does a large eigenvalue $\lambda_k$ correspond to a large spread in $u_k$ (meaning large value of $\text{Var}(||\text{proj}_{u_k}(x)||)$). 
+        \item Why does a large eigenvalue $\lambda_k$ correspond to a large spread in $u_k$ (meaning large value of $\text{Var}(||\text{proj}_{u_k}(x)||)$)?
         \item For what values of the spectrum of $\Sigma$ are the level sets spherical versus oblong?
         \item When are the major axes of the level sets aligned with the coordinate axes?
     \end{itemize}
