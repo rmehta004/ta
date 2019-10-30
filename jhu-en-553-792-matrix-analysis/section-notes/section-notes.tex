@@ -403,7 +403,7 @@ Pointers for Homework 1:
         \item What can you say about a matrix with distinct eigenvalues?
         \item What can you say about the eigenvalues of diagonal/triangular matrix?
         \item A matrix is invertible - what can you say about its eigenvalues?
-    \end{enumerate}
+\end{enumerate}
 
 \section{September 24, 2019}
 
@@ -541,8 +541,7 @@ The first question I will direct to Dr. Fishkind, while for the second, the best
     \begin{align*}
         \max_{\substack{x \neq 0 \\ x \perp u_{k+1} ,..., x_n}} \frac{x^* A x}{x^* x} &= \max_{\delta_1, ..., \delta_k} \frac{(\sum_{i=1}^k \delta_i u_i)^* U D U^* \sum_{i=1}^k \delta_i u_i}{(\sum_{i=1}^k \delta_i)^* (\sum_{i=1}^k \delta_i)}\\
         &= \max_{\delta_1, ..., \delta_k} \frac{(\sum_{i=1}^k \overline{\delta_i} u_i^* U) D (\sum_{i=1}^k \delta_i U^* u_i)}{\sum_{i=1}^k \overline{\delta_i} \delta_i}\\
-        &= \max_{\delta_1, ..., \delta_k}
-        \begin{bmatrix}
+        &= \max_{\delta_1, ..., \delta_k} \frac{\begin{bmatrix}
             \overline{\delta_1} & \ldots & \overline{\delta_k} & 0 & \ldots & 0
         \end{bmatrix}
         \begin{bmatrix}
@@ -555,7 +554,7 @@ The first question I will direct to Dr. Fishkind, while for the second, the best
         \end{bmatrix}
         \begin{bmatrix}
             \delta_1 \\ \vdots \\ \delta_k \\ 0 \\ \vdots \\ 0
-        \end{bmatrix}\\
+        \end{bmatrix}}{\sum_{j=1}^k |\delta_j|^2}\\
         &= \max_{\delta_1, ..., \delta_k} \sum_{i=1}^k \frac{|\delta_i|^2}{\sum_{j=1}^k |\delta_j|^2} \lambda_i\\
         &= \lambda_k
     \end{align*}
@@ -684,6 +683,69 @@ Let $x: \Omega \rightarrow \R^d$ and $x \in \R^d$ both represent a $d$-dimension
         \item Drop columns from the {\it original} data matrix $X$ to $X_r$, then orthogonalize the reduced covariance matrix $\frac{1}{n} X_r^T X_r = \hat{U}_r \hat{D}_r\hat{U}^T_r$. Represent the reduced data as $Z_r = X_r \hat{U}_r$.
     \end{itemize}
     What is the conceptual difference between these two methods, that is, orthogonalizing and then dropping columns (of which PCA is an example) or vice versa? (Hint: use Interlacing II.)
+\end{enumerate}
+
+\section{October 22, 2019}
+
+\subsection*{Exercises in section}
+
+\begin{enumerate}
+    \item What can be said about the diagonal elements of a skew Hermitian matrix?
+    \item Let $A \in M_n$ be Hermitian. Prove that $A = A_+ + A_-$, where
+    \begin{itemize}
+        \item $A_+$ is P.S.D. and $A_-$ is N.S.D.,
+        \item rank($A$) = rank($A_+$) + rank($A_-$), and 
+        \item $A_+ A_- = A_+ A_- = 0$.
+    \end{itemize}
+    \item Prove that
+    \begin{itemize}
+        \item if $A$ is Hermitian, then $A^2$ is P.S.D.
+        \item if $A$ is skew Hermitian, then $A^2$ is N.S.D.
+    \end{itemize}
+    \item Let $\mathcal{H}_n$ be the Hermitian matrices in $M_n$. $A \succeq B$ for $A, B \in \mathcal{H}_n$ if $A - B$ is P.S.D.. Prove that this is a partial ordering on $\mathcal{H}_n$, in that
+    \begin{itemize}
+        \item $A \succeq A$,
+        \item $A \succeq B$ and $B \preceq A \iff A = B$, and
+        \item $A \succeq B$ and $B \succeq C \implies A \succeq C$.
+    \end{itemize}
+    Why is $\mathcal{H}_n$ not totally ordered?
+    \item Let $A \in M_n$ be Hermitian with exactly one positive and one negative eigenvalue. Explain why $\lambda_2(A) \geq 0$ and $\lambda_{n-1}(A) \leq 0$ with equality if and only if $n > 2$.
+    \item Prove that the inner minimization and maximization of Courant-Fishcher always exists. That is, for any $A \in M_n$, $y_{1}, ..., y_{m}$ with $m < n$,
+    \begin{align*}
+        \inf_{x \neq 0, \ x \perp y_{1}, ..., y_{m}} \frac{x^* A x}{x^*x} \ \text{ and } \ \sup_{x \neq 0, \ x \perp y_{1}, ..., y_{m}} \frac{x^* A x}{x^*x}
+    \end{align*}
+    are achieved and can be replaced by minimum and maximum, respectively. You can take for granted that the matrix $z^* A z$ is continuous in $z$, with respect to the metric $d(z_0, z_1) = ||z_0 - z_1||$ where $||\cdot||$ is the Euclidean norm. We will be able to show this rigorously in Chapter 5.)
+\end{enumerate}
+
+We'll give a proof for the infimum in part (f), as to start getting used to the real analysis style proofs. 
+\begin{proof}
+First we note that
+\begin{align*}
+    \frac{x^* A x}{x^*x} = \frac{x^* A x}{||x||^2} = \left(\frac{x}{||x||}\right)^* A \left(\frac{x}{||x||}\right)
+\end{align*}
+$\frac{x}{||x||}$ is a unit vector, so we can just search values of $z^* A z$ over unit vectors $z$. Similarly, $x \perp y_{1}, ..., y_{m}$ if and only if $\frac{x}{||x||} \perp y_{1}, ..., y_{m}$, as scaling the length does not affect orthogonality (for non-zero vectors). Thus,
+\begin{align*}
+    \inf_{x \neq 0, \ x \perp y_{1}, ..., y_{m}} \frac{x^* A x}{x^*x} = \inf_{||z||_2 = 1, \ z \perp y_{1}, ..., y_{m}} z^* A z
+\end{align*}
+Using the hint that $z^* A z$ is continuous, we can show the existence of the infimum if the search space is compact. It is clear that the unit sphere $\{z : ||z|| = 1\}$ is compact. On the other hand, the set $\{z: z \perp y_{1}, ..., y_{m}\}$ is a subspace of dimension $l \leq m$. The search space is the intersection of these two sets. See Figure \ref{fig:sphere} for an example.
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/sphere-and-plane.png}
+    \caption{Let $O$ be the origin, and $y$ 
+    (not shown) be a vector normal to the plane. Then, $A$ and $B$ are two points in the intersection. They are both of unit length, and both orthogonal to $y$.}
+    \label{fig:sphere}
+\end{figure}
+The subspace is represented by a hyperplane that crosses the origin. The intersection of an $l$-dimensional subspace and an $n$-dimensional unit sphere is an $l$-dimensional unit sphere. This is still a compact set, completing the proof that the inf (and sup) exist, which can now be replaced by min (and max).
+\end{proof}
+
+Pointers for Homework 4:
+\begin{enumerate}
+        \item What relationship can you advance about the set of Hermitian matrices and the set of skew Hermitian matrices?
+        \item If $x \in \R^n$ majorizes $y \in \R^n$, what can you say about $x_1$ and $y_1$ (by definition) and about $x_n$ and $y_n$ (by inspection)?
+        \item What can you say about any commuting matrices? If they are normal?
+        \item Remember that in constructing principle submatrices, the undeleted rows/columns need not be contiguous. That is, for $n = 10$, I can delete rows/columns 1 - 3 and 5 - 7. This generates a submatrix of rows/columns 4, 8, 9, and 10.
+        \item The leading principle submatrices $A_1, A_2, ..., A_n$ of $A$ are by definition principle submatrices of $A$. What else is true about them?
+        \item For Problem 7, you should have a clear and specific analogue for Rayleigh-Ritz, Courant-Fischer, Interlacing I and II (and consequences), Weyl's theorem, and the majorization results.
 \end{enumerate}
 
 \end{document}
