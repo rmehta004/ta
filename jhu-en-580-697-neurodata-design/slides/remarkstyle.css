@@ -1,0 +1,252 @@
+body {
+  font-family: 'gentona'; /* Varela Round */
+  font-size: 1.0em;
+  /*color: #dfd6c2;*/
+  color: #a6bcd7;*/
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'quadon';
+  font-weight: 400;
+  margin-bottom: 0;
+  color: #a6bcd7;*/
+  text-align: center;
+  /*text-shadow: 2px 2px gray; /*#ff0000;*/*/
+}
+.remark-slide-content {
+  font-size: 1.5em;
+  background: #28282e;
+  background: -webkit-radial-gradient(circle, #28282e, #15120e, black); /* Safari */
+  background: -o-radial-gradient(circle, #28282e, #15120e, black); /* Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(circle, #272822, #15120e, black); /* Firefox 3.6 to 15 */
+  background: radial-gradient(circle, #28282e, #15120e, black); /* Standard syntax */
+  color: #dfd6c2;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+hi {
+position: absolute;
+left: 100px;
+top: 50px;
+}
+.remark-slide-content h1 { font-size: 3em; }
+.remark-slide-content h2 { font-size: 2em; }
+.remark-slide-content h3 { font-size: 1.6em; }
+.remark-slide-content h4 { font-size: 1.4em; }
+.footnote {
+  position: absolute;
+  bottom: 3em;
+}
+.navbar {
+  position: absolute;
+  float: center;
+  top: 0em;
+  font-family: 'titling-gothic';  /* Yanone Kaffeesatz */
+  font-weight: 200;
+  color: #A7A7A7;
+}
+.navbar a {
+  color: #A7A7A7;
+}
+.bbar {
+  position: absolute;
+  bottom: 13px;
+  left: 13px;
+  font-family: 'titling-gothic';  /* Yanone Kaffeesatz */
+  font-weight: 200;
+  color: #A7A7A7;
+}
+.bbar a {
+  color: #A7A7A7;
+}
+.cbar {
+  position: absolute;
+  bottom: 13px;
+  left: 13px;
+  font-family: 'titling-gothic';  /* Yanone Kaffeesatz */
+  font-weight: 200;
+  /*color: #A7A7A7;*/
+  color: #bdbcbc;
+}
+.cbar a{
+ color: #bdbcbc;
+}
+
+.btn {
+  background: #424242;
+  height: 2em;
+}
+li p { line-height: 1.25em; }
+.r { color: #fa0000; }
+.w {color: white;}
+.ye { color: #FFFF00; }
+.y { color: #fcfaf6; }
+.pink { color: #FF87F3;}
+.orange { color: #FFA500;}
+.g { color: #00CC00; }
+.blue { color: #75E9FF;}
+.s {color :#318dde;}
+.purple { color: #A149A9;}
+.large { font-size: 2em; }
+.black { color: black; background-color: white;}
+a, a > code {
+  color:#318dde;
+  text-decoration: none; /*underline*/
+}
+
+a:hover {
+  color: white;
+}
+
+code {
+  background: #424242;
+  border-radius: 5px;
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+.remark-code-line-highlighted     { background-color: #373832; }
+/*      .pull-left {
+  float: left;
+  width: 47%;
+}*/
+
+.pull-left {
+  float: left;
+  width: 47%;
+}
+.pull-right {
+  float: right;
+  width: 47%;
+}
+.center {
+  margin: auto;
+  width: 100%;
+  padding: 10px;
+}
+.small {
+  font-size: 0.8em;
+}
+/*      .pull-right {
+  float: right;
+  width: 47%;
+}*/
+.pull-bottom {
+  position: absolute;
+  bottom: 0;
+}
+.bottom {
+  position: absolute;
+  bottom: 35px;
+  left: 13px;
+  font-family: 'Yanone Kaffeesatz';
+}
+.pull-right ~ p {
+  clear: both;
+}
+#slideshow .slide .content code {
+  font-size: 0.8em;
+}
+#slideshow .slide .content pre code {
+  font-size: 0.9em;
+  padding: 15px;
+}
+.inverse {
+  background: white;
+  color: white;
+  text-shadow: 0 0 20px #333;
+}
+.inverse p {
+  color: white;
+}
+.inverse h1, .inverse h2 {
+  color: #f3f3f3;
+  line-height: 0.8em;
+}
+#frame { zoom: 0.75; -moz-transform: scale(0.75); -moz-transform-origin: 0 0; }
+
+#outer {
+  width: 100%;
+  text-align: center;
+}
+#inner {
+  display: inline-block;
+}
+
+/* Slide-specific styling */
+#slide-inverse .footnote {
+  bottom: 12px;
+  left: 20px;
+}
+#slide-how .slides {
+  font-size: 0.9em;
+  position: absolute;
+  top:  151px;
+  right: 140px;
+}
+#slide-how .slides h3 {
+  margin-top: 0.2em;
+}
+#slide-how .slides .first, #slide-how .slides .second {
+  padding: 1px 20px;
+  height: 90px;
+  width: 120px;
+  -moz-box-shadow: 0 0 10px #777;
+  -webkit-box-shadow: 0 0 10px #777;
+  box-shadow: 0 0 10px #777;
+}
+#slide-how .slides .first {
+  background: #fff;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  z-index: 1;
+}
+#slide-how .slides .second {
+  position: relative;
+  background: #fff;
+  z-index: 0;
+}
+
+/* Two-column layout */
+.left-column {
+  color: #777;
+  width: 20%;
+  height: 92%;
+  float: left;
+}
+.left-column h2:last-of-type, .left-column h3:last-child {
+  color: #000;
+}
+.right-column {
+  width: 75%;
+  float: right;
+  padding-top: 1em;
+}
+br {
+  line-height: 50%;
+}
+.task {
+  float: right;
+  font-size: 0.9em;
+  padding-top: 0.6em;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even){background-color: #4a484c}
+th {
+    background-color: #6cace4;
+    color: white;
+}
+
+/*code.has-jax {
+  font: inherit;
+  font-size: 100%;
+  background: inherit;
+  border: inherit;
+}*/
