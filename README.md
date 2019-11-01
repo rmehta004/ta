@@ -7,3 +7,8 @@
 **Section time and location:** Tuesdays at 9:00AM - 9:50AM in Schaffer 302  
 **Office hours and location:** Tuesdays at 6:00PM - 8:00PM in Whitehead 212  
 
+## Fall 2019 - EN.580.697: Neuro Data Design I
+
+**Website:** http://neurodatadesign.io/   
+**Office hours and location:** Any scheduled time and day between 10:00AM - 6:00PM in Clark 317.  
+
