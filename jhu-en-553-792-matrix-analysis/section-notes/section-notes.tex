@@ -13,6 +13,13 @@
 \usepackage{titlesec}
 \usepackage{amsthm}
 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
 \titleformat*{\section}{\bfseries}
 \titleformat*{\subsection}{\bfseries}
 \titleformat*{\subsubsection}{\bfseries}
@@ -24,6 +31,8 @@
 \newcommand{\N}{\ensuremath{\mathbb N}}
 \newcommand{\F}{\ensuremath{\mathbb F}}
 \newcommand{\EV}{\ensuremath{\mathbb E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
 \newcommand{\e}{\epsilon}
 \newcommand{\E}{\exists}
 \newcommand{\sse}{\subseteq}
@@ -747,6 +756,147 @@ Pointers for Homework 4:
         \item The leading principle submatrices $A_1, A_2, ..., A_n$ of $A$ are by definition principle submatrices of $A$. What else is true about them?
         \item For Problem 7, you should have a clear and specific analogue for Rayleigh-Ritz, Courant-Fischer, Interlacing I and II (and consequences), Weyl's theorem, and the majorization results.
 \end{enumerate}
+
+\section{October 29, 2019}
+
+The theme of this section is understanding the singular value decomposition (SVD) of common data matrices. In statistics and machine learning, the data matrix (or design matrix) $X \in M_{n, d}(\R)$ has {\bf rows} $x^{(1)}, ..., x^{(n)} \in \R^d$ where each $x^{(i)}$ is an observation of some random vector
+\begin{align*}
+    x: \Omega \rightarrow \R^d
+\end{align*}
+with mean
+\begin{align*}
+    \mu = \EV[x] \in \R^d
+\end{align*}
+and covariance matrix
+\begin{align*}
+    \Sigma = \Cov(x) = \EV[(x - \mu)(x - \mu)^T] = \EV[xx^T] - \EV[x]\EV[x^T]
+\end{align*}
+This is analogous to the variance formula for univariate $x$, i.e. $\Var(x) = \EV[x^2] - \EV[x]^2$. We will just be thinking about the real version of these objects, but for complex numbers the analysis is the same, replacing transpose with conjugate transpose. Another data matrix we will visit is a grayscale image $P \in M_{m,n}(\R)$. 
+
+We first will compare the SVD and eigendecomposition of an arbitrary Hermitian matrix $A$. If $A = UDU^*$ and $A^* = UD^*U = UDU^*$, then
+\begin{align*}
+    AA^* = U D U^* U D ^* = U D^2 U^*
+\end{align*}
+meaning that $A$ and $AA^*$ share the same eigenvectors, with $AA^*$ having the same eigenvalues, but squared. The ``$U$" matrix of the eigendecomposition of $AA^*$ is the same as the ``$U$" of the SVD of $A$, by definition.
+\begin{align*}
+    A = U \Sigma V^*
+\end{align*}
+What about $\Sigma$? Also by definition, we have that
+\begin{align*}
+    \Sigma = (D^2)^{\frac{1}{2}} = |D| = D \cdot \text{sgn}(D)
+\end{align*}
+where the $|\cdot|$ denotes element-wise absolute value, and $\text{sgn}(\cdot)$ is the element-wise sign function. 
+\begin{align*}
+    \text{sgn}(t) = \begin{cases}
+    +1 &\text{ if } t > 0\\
+    0 &\text{ if } t = 0\\
+    -1 &\text{ if } t < 0
+    \end{cases}
+\end{align*}
+Thus we can write
+\begin{align*}
+    UDU^* = A = U \Sigma V^* = U D \cdot \text{sgn}(D) V^*
+\end{align*}
+If $A$ is invertible, then $D$ is invertible, and we can conclude by cancelling out $UD$ that
+\begin{align*}
+    U^* = \text{sgn}(D) V^*
+\end{align*}
+Thus, the rows of $V^*$ are just equal to the rows of $U^*$, down to a sign. Where $A$ has a positive eigenvalue $\lambda_i$, the rows $u_i^*$ and $v_i^*$ will agree. Where $A$ has a negative eigenvalue $\lambda_i$, then $u_i^* = -v_i^*$. If $D$ is not invertible, then there will be zeros in $\text{sgn}(D)$, but if that is the case, then it doesn't really matter what is in those rows of $U^*$ and $V^*$ (as long as they are orthonormal), as those rows will get wiped out by the zero singular values in $\Sigma$. So we can interpret this idea as ``essentially", $U^*$ and $V^*$ will agree down to signs of rows. Additionally, if $A$ is positive semidefinite (P.S.D.), then we can say that the SVD and eigendecomposition are the {\bf same} (we will omit the ``essentially" from now on).
+
+Coming back to the random variable $x$, will first show that the covariance matrix $\Sigma$ is P.S.D.. Give any $a \neq 0 \in \R^d$, we have:
+\begin{align*}
+    a^T \Sigma a &= a^T (\EV[xx^T] - \EV[x]\EV[x^T]) a\\
+    &= \EV[a^Txx^Ta] - \EV[a^Tx]\EV[x^Ta] \\
+    &= \EV[(a^T x)^2] - (\EV[a^T x])^2 \\
+    &= \Var(a^T x)
+\end{align*}
+This value is nonnegative for any $a$, completing the proof. We cannot say more than that, because $a^T x$ can be constant even when each coordinate of $x$ has variance. Take for example
+\begin{align*}
+    x = \begin{bmatrix}y \\ 1 - y \end{bmatrix}
+\end{align*}
+where $y \sim $ Unif(0, 1). Letting $a = [1 \ 1]^T$, we have that $a^Tx = 1$ with probability 1, i.e. $\Var(a^Tx) = 0$. So if the covariance matrix was P.D., what would that imply? It means that no dimensions of $x$ are linearly dependent. For those taking Statistical Theory I with Carey Priebe, this is the concept behind a rank $d$ exponential family.
+
+Similarly, if we expand to the full data matrix $X$, every column of $X$ contains independent copies of observations from each dimension. If $\Sigma$ is P.D., then no column of $X$ can be represented as a linear combination of the others. This reveals a goal - if the data matrix did have columns that were expressible as linear combinations of the others, we might want to drop those columns, reducing the dimension of our dataset, which might have benefits for statistical inference. This can be done harmlessly if $\Sigma$ is not P.D. and has some of its eigenvalues (hence singular values) set to zero. What if there is an eigenvalue $\lambda_j$ of $\Sigma$ such that
+\begin{align*}
+    \lambda_j = \epsilon \approx 0
+\end{align*}
+for some small $\epsilon > 0$? This means that there is a dimension of $x$ (hence a column of $X$) that is {\bf approximately} a linear combination of the others. We still might be able to benefit statistically by dropping such a column from out dataset. As it turns out, in any dataset, we can have columns highly correlated with one another. This means that the non-diagonal entries of $\Sigma$ can be far from zero. The next question is whether there exists a basis to represent the dimensions of the data are uncorrelated. We know that $\Sigma$ is P.S.D., so we can write
+\begin{align*}
+    \Sigma = UDU^T
+\end{align*}
+What is the interpretation of $D$?
+\begin{align*}
+    D &= U^T \Sigma U\\ 
+    &= U^T (\EV[xx^T] - \EV[x]\EV[x^T]) U\\
+    &= \EV[U^T x(U^T x)^T] - \EV[U^T x]\EV[(U^T x)^T]\\
+    &= \Cov(U^T x)
+\end{align*}
+The random vector $U^T x$ is just $x$ in a rotated basis, but in this basis, all of the dimensions of $U^T x$ are uncorrelated! ($U^Tx$ is a transform of $x$ into the basis of $u_1, ..., u_d$, the columns of $U$, because $U$ is real orthogonal.) Now, we can consider the random variable $z = U^T x$ with linearly independent coordinates. The $j$-th diagonal of $D$ is $\lambda_j$, we have
+\begin{align*}
+    \lambda_j = \Var(z_j) = \Var(u_j^T x)
+\end{align*}
+because
+\begin{align*}
+    z = U^T x = \begin{bmatrix}
+    u_1^T x\\
+    \vdots\\
+    u_d^T x
+    \end{bmatrix}
+\end{align*}
+We can also write
+\begin{align*}
+    x = Uz = z_1 u_1 + ... z_d u_d = (u_1^T x)u_1 + ... + (u_d^T x)u_d = \sum_{j=1}^d (u_j^T x)u_j
+\end{align*}
+as the orthogonal projection of $x$ onto the orthonormal basis $\{u_1, ..., u_d\}$. We are interested in recovering the matrix $Z = XU \in M_{n,d}(\R)$, the orthogonalized representation of $X$. Other than the benefit of being able to observe the components of $x$ that are uncorrelated, we can drop columns that have low values of $\lambda_j$, as they may not describe the main patterns in the data. This linear dimension reduction technique is known as principle component analysis (PCA), and can be read about in detail \href{https://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch18.pdf}{here}.
+
+We generally do not have access to the true distribution generating $x$, and therefore do not have $\Sigma$ on hand. Let's assume that $\EV[x] = 0$. (We can achieve this by subtracting the sample mean from each point.) Then, a natural estimate of the covariance matrix is
+\begin{align*}
+    \hat{\Sigma} = \frac{1}{n} X^T X
+\end{align*}
+As an exercise, prove that this estimate converges in probability to $\Sigma$. That is, prove that for all $\epsilon$ > 0
+\begin{align*}
+    P[||\hat{\Sigma} - \Sigma||_F > \epsilon] \rightarrow 0
+\end{align*}
+as $n \rightarrow \infty$. You can use the Weak Law of Large Numbers. Similarly, show trivially that the eigenvalue vector $\vec{\lambda}(\hat{\Sigma})$ converges in probability to the true eigenvalue vector $\vec{\lambda}(\Sigma)$. (You can use that the eigenvalues are continuous in the matrix.) Finally, check that $\hat{\Sigma}$ is P.S.D. as well. Thus, $\hat{\Sigma}$ can be eigendecomposed.
+\begin{align*}
+    \hat{\Sigma} = \hat{U} \hat{D} \hat{U}^T
+\end{align*}
+and we can estimate the {\it loading} matrix
+\begin{align*}
+    \hat{Z} = X \hat{U}
+\end{align*}
+From here, columns can be dropped by any method. While this checks out theoretically, from a numerical viewpoint, there are some shortcomings. Both the computation of $\hat{\Sigma}$ as well as its eigendecomposition are notoriously expensive operations. Additionally, eigendecomposition is less numerically stable than singular value decomposition. (You should believe that taking the eigendecomposition of $AA^*$ is not how the SVD of $A$ is typically computed by linear algebra libraries.) Is there a way to compute $\hat{Z}$ without either of the above steps? The answer is in the SVD. Consider the SVD of the matrix below.
+\begin{align*}
+    \tfrac{1}{\sqrt{n}} X^T = \hat{U} \hat{S} \hat{V}^T 
+\end{align*}
+This matrix is chosen so that ``$\hat{U}$" is the same ``$\hat{U}$" that we discussed before - an estimate of the eigenvectors of $\Sigma$, as
+\begin{align*}
+    \tfrac{1}{\sqrt{n}} X^T \left(\tfrac{1}{\sqrt{n}} X^T\right)^T = \tfrac{1}{n} X^T X = \hat{U} \hat{D} \hat{U}^T 
+\end{align*}
+and this the $\hat{U}$ used in the SVD of $\tfrac{1}{\sqrt{n}} X^T$. Then we can take the transpose of the SVD $\tfrac{1}{\sqrt{n}} X^T$, which is the SVD of $\tfrac{1}{\sqrt{n}} X$.
+\begin{align*}
+    \tfrac{1}{\sqrt{n}} X = \hat{V} \hat{S}^T \hat{U}^T
+\end{align*}
+and multiply both sized by $\hat{U}$.
+\begin{align*}
+    \tfrac{1}{\sqrt{n}} X \hat{U} = \hat{V} \hat{S}^T \hat{U}^T \hat{U} = \hat{V} \hat{S}^T
+\end{align*}
+Thus, we have
+\begin{align*}
+    \hat{Z} = X \hat{U} = \sqrt{n} \hat{V} \hat{S}^T
+\end{align*}
+The orthogonalized $\hat{Z}$ can be computed fully by the SVD of $X$! You may have not seen the $\sqrt{n}$ factor before, but this is only written so that the $M_d$-valued matrix in the SVD of $X$ is the same as the eigenvector matrix of $\hat{\Sigma}$. Multiplying the entire dataset by a number will usually not affect the result of statistical inference.
+
+Departing from the statistical example to a very simple image analysis example, we can consider an $m$-by$n$ grayscale image $P$. If we compute its SVD, rather than writing in matrix form, we can write $P$ as the sum of scaled rank 1 matrices.
+\begin{align*}
+    P = \sum_{i=1}^{\min(m,n)} \sigma_i u_i v_i^T
+\end{align*}
+where $u_i$ and $v_i$ are the $i$-th columns of $U$ and $V$, respectively, and $\sigma_i$ is the $i$-th ``diagonal" of $\Sigma$. Thus, $P$ is generated by overlaying many rank 1 layers. It is conceivable that the largest singular values correspond to layers containing main effects such as objects and shapes, moderate singular values contain details such as texture, and near-zero singular values correspond to noise layers. The image can be written in a compressed, low-rank format with virtually no loss of discernable information. At this \href{http://timbaumann.info/svd-image-compression-demo/}{site}, you can drag a slider that determines the number of singular values to retain in various images. For many of the images, hundreds of singular values can be dropped without much change in the image. These are just two among the many applications of the SVD.
+
+\section{November 5, 2019}
+
+{\it Homework 4 solutions.}
+{\it Copies of Homework 5 solutions distributed.}
 
 \end{document}
 
