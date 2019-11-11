@@ -12,6 +12,7 @@
 \usepackage{enumitem}                     
 \usepackage{titlesec}
 \usepackage{amsthm}
+\usepackage{natbib}
 
 \hypersetup{
     colorlinks=true,
@@ -30,6 +31,9 @@
 \newcommand{\C}{\ensuremath{\mathbb C}}
 \newcommand{\N}{\ensuremath{\mathbb N}}
 \newcommand{\F}{\ensuremath{\mathbb F}}
+\newcommand{\K}{\ensuremath{\mathbb K}}
+\newcommand{\Z}{\ensuremath{\mathbb Z}}
+\newcommand{\B}{\ensuremath{\mathcal B}}
 \newcommand{\EV}{\ensuremath{\mathbb E}}
 \newcommand{\Var}{\text{Var}}
 \newcommand{\Cov}{\text{Cov}}
@@ -41,6 +45,7 @@
 \newcommand{\ra}{\rightarrow}
 \newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
 \newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ip}[2]{\left\langle #1, #2\right\rangle}
 
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[section]
@@ -426,7 +431,7 @@ Pointers for Homework 1:
 
 {\it Copies of Homework 3 solutions distributed.}\\
 
-When I say "application", I mean that these topics are not tested in the course, but topics mostly from mathematical data science that are interesting and make use of material from the course.
+When I say ``application", I mean that these topics are not tested in the course, but topics mostly from mathematical data science that are interesting and make use of material from the course.
 
 \subsection*{Application: Projection Matrices} 
 
@@ -548,7 +553,7 @@ The first question I will direct to Dr. Fishkind, while for the second, the best
     \end{align*}
     with not all $\delta_i$ equal to 0. Let $A = UDU^*$ be the unitary diagonalization.
     \begin{align*}
-        \max_{\substack{x \neq 0 \\ x \perp u_{k+1} ,..., x_n}} \frac{x^* A x}{x^* x} &= \max_{\delta_1, ..., \delta_k} \frac{(\sum_{i=1}^k \delta_i u_i)^* U D U^* \sum_{i=1}^k \delta_i u_i}{(\sum_{i=1}^k \delta_i)^* (\sum_{i=1}^k \delta_i)}\\
+        \max_{\substack{x \neq 0 \\ x \perp u_{k+1} ,..., u_n}} \frac{x^* A x}{x^* x} &= \max_{\delta_1, ..., \delta_k} \frac{(\sum_{i=1}^k \delta_i u_i)^* U D U^* \sum_{i=1}^k \delta_i u_i}{(\sum_{i=1}^k \delta_i)^* (\sum_{i=1}^k \delta_i)}\\
         &= \max_{\delta_1, ..., \delta_k} \frac{(\sum_{i=1}^k \overline{\delta_i} u_i^* U) D (\sum_{i=1}^k \delta_i U^* u_i)}{\sum_{i=1}^k \overline{\delta_i} \delta_i}\\
         &= \max_{\delta_1, ..., \delta_k} \frac{\begin{bmatrix}
             \overline{\delta_1} & \ldots & \overline{\delta_k} & 0 & \ldots & 0
@@ -814,7 +819,7 @@ This value is nonnegative for any $a$, completing the proof. We cannot say more 
 \begin{align*}
     x = \begin{bmatrix}y \\ 1 - y \end{bmatrix}
 \end{align*}
-where $y \sim $ Unif(0, 1). Letting $a = [1 \ 1]^T$, we have that $a^Tx = 1$ with probability 1, i.e. $\Var(a^Tx) = 0$. So if the covariance matrix was P.D., what would that imply? It means that no dimensions of $x$ are linearly dependent. For those taking Statistical Theory I with Carey Priebe, this is the concept behind a rank $d$ exponential family.
+where $y \sim $ Unif(0, 1). Letting $a = [1 \ 1]^T$, we have that $a^Tx = 1$ with probability 1, i.e. $\Var(a^Tx) = 0$. So if the covariance matrix was P.D., what would that imply? It means that no dimensions of $x$ are linearly dependent. For those taking Statistical Theory I (EN.553.730), this is the concept behind a rank $d$ exponential family (see Section 1.6 of \citet{bickel}), in that the sufficient statistic $T$ must have P.D. covariance.
 
 Similarly, if we expand to the full data matrix $X$, every column of $X$ contains independent copies of observations from each dimension. If $\Sigma$ is P.D., then no column of $X$ can be represented as a linear combination of the others. This reveals a goal - if the data matrix did have columns that were expressible as linear combinations of the others, we might want to drop those columns, reducing the dimension of our dataset, which might have benefits for statistical inference. This can be done harmlessly if $\Sigma$ is not P.D. and has some of its eigenvalues (hence singular values) set to zero. What if there is an eigenvalue $\lambda_j$ of $\Sigma$ such that
 \begin{align*}
@@ -853,11 +858,20 @@ We generally do not have access to the true distribution generating $x$, and the
 \begin{align*}
     \hat{\Sigma} = \frac{1}{n} X^T X
 \end{align*}
-As an exercise, prove that this estimate converges in probability to $\Sigma$. That is, prove that for all $\epsilon$ > 0
-\begin{align*}
-    P[||\hat{\Sigma} - \Sigma||_F > \epsilon] \rightarrow 0
-\end{align*}
-as $n \rightarrow \infty$. You can use the Weak Law of Large Numbers. Similarly, show trivially that the eigenvalue vector $\vec{\lambda}(\hat{\Sigma})$ converges in probability to the true eigenvalue vector $\vec{\lambda}(\Sigma)$. (You can use that the eigenvalues are continuous in the matrix.) Finally, check that $\hat{\Sigma}$ is P.S.D. as well. Thus, $\hat{\Sigma}$ can be eigendecomposed.
+\begin{exc}
+    Prove that the estimate $\hat{\Sigma}$ converges in probability to $\Sigma$. That is, prove that for all $\epsilon > 0$
+    \begin{align*}
+        P[||\hat{\Sigma} - \Sigma||_F > \epsilon] \rightarrow 0
+    \end{align*}
+    as $n \rightarrow \infty$. You can use the Weak Law of Large Numbers.
+\end{exc}
+\begin{exc}
+    Similarly, show trivially that the eigenvalue vector $\vec{\lambda}(\hat{\Sigma})$ converges in probability to the true eigenvalue vector $\vec{\lambda}(\Sigma)$. You can use that the eigenvalues are continuous over $M_n$.
+\end{exc}
+\begin{exc}
+    Check that $\hat{\Sigma}$ is P.S.D. as well. Thus, $\hat{\Sigma}$ can be eigendecomposed with nonnegative eigenvalues.
+\end{exc}
+From the previous exercise, we have that
 \begin{align*}
     \hat{\Sigma} = \hat{U} \hat{D} \hat{U}^T
 \end{align*}
@@ -887,7 +901,7 @@ Thus, we have
 \end{align*}
 The orthogonalized $\hat{Z}$ can be computed fully by the SVD of $X$! You may have not seen the $\sqrt{n}$ factor before, but this is only written so that the $M_d$-valued matrix in the SVD of $X$ is the same as the eigenvector matrix of $\hat{\Sigma}$. Multiplying the entire dataset by a number will usually not affect the result of statistical inference.
 
-Departing from the statistical example to a very simple image analysis example, we can consider an $m$-by$n$ grayscale image $P$. If we compute its SVD, rather than writing in matrix form, we can write $P$ as the sum of scaled rank 1 matrices.
+Departing from the statistical example to a very simple image analysis example, we can consider an $m$-by$-n$ grayscale image $P$. If we compute its SVD, rather than writing in matrix form, we can write $P$ as the sum of scaled rank 1 matrices.
 \begin{align*}
     P = \sum_{i=1}^{\min(m,n)} \sigma_i u_i v_i^T
 \end{align*}
@@ -911,6 +925,160 @@ Exam 2 is on Friday, November 8, 2019. An enumeration of the topics in Chapter 4
 \end{itemize}
 
 {\it Copies of Homework 4 and 5 solutions distributed.}
+
+\section{November 12, 2019}
+
+The theme of this section will be to convince you that it is interesting and useful to use inner products, norms, and metrics to generalize our notions of orientation, length, and distance beyond three-dimensional Euclidean space (or more generally, $\K^n$ where $\K = \R$ or $\C$).
+
+\subsection{Infinite bases}
+
+With inner products and norms, we can induce metrics. Thus, every inner product space (IPS) and normed linear space (NLS) is a metric space, and all of the theory we developed in the beginning of the course applies. Specifically, with metrics we have limits and convergence of sequences, and with convergence we can define truly infinite bases. When we were working in just vector spaces without additional structure, we defined a basis $\B$ of vector space $V$ as a (possibly infinite) set of vectors such that
+\begin{itemize}
+    \item Any finite subset of vectors $b_1, ..., b_k \in \B$ are linearly independent.
+    \item For all $v \in V$, $v = \alpha_1b_1 + ... +\alpha_k b_k$ for some finite subset of vectors $b_1, ..., b_k \in \B$ and $\alpha_1, ..., \alpha_k \in \K$.
+\end{itemize}
+This is known as a Hamel basis. Now, assume that there is a norm on $V$, and there is a countable set of vectors $\B = \{b_1, b_2, ...\}$. We can say that:
+\begin{align*}
+    v = \sum_{i=1}^\infty \alpha_i b_i 
+\end{align*}
+if
+\begin{align*}
+    \left|\left|\sum_{i=1}^n \alpha_i b_i - v\right|\right| \rightarrow 0
+\end{align*}
+as $n \rightarrow \infty$. Precisely, this is what is meant by the notation $v = \sum_{i=1}^\infty \alpha_i b_i$. This is an infinite linear combination. We say that $\B$ is a linearly independent set of vectors if
+\begin{align*}
+    \sum_{i=1}^\infty \alpha_i b_i = 0 \implies \alpha_i = 0 \ \forall i
+\end{align*}
+Using these ideas, a countable basis for a normed linear space can be defined using the new definitions of linear combinations and linear independence. What is a canonical example of a countable basis for a NLS $V$? $V$ must be infinite-dimensional, as any finite dimensional linear space over $\K$ is isomorphic to $\K^n$, which has a finite basis. A common example is the Fourier modes $b_k(\cdot) = e^{2\pi i k f_0 \cdot}$ where $f_0$ is the fundamental frequency in Hz and $k \in \Z$ for some class of periodic functions $\{f(\cdot)\}$ which we will explore later.
+
+\subsection*{The space $L_2$}
+
+Now, we will give an example of infinite-dimensional vector space with a norm and inner product. Consider the set of functions
+\begin{align*}
+    L_2([0,1)) = \{f : \int_{[0,1]} |f(t)|^2 d\mu < \infty \}
+\end{align*}
+where the $\int \cdot \ d\mu$ notation on the right refers to Lebesgue integration (don't worry if you haven't seen this before, just think if it as the integration you are used to). This is actually a Hilbert space, with inner product
+\begin{align*}
+    \ip{f}{g} = \int_0^1 f(t)\overline{g(t)} d\mu
+\end{align*}
+and norm
+\begin{align*}
+    ||f|| = \sqrt{\ip{f}{f}} = \sqrt{\int_0^1 |f(t)|^2 d\mu}
+\end{align*}
+$L_2([0,1))$ is only complete with this choice of norm. It is not a Hilbert space with respect to say $||f||_1 = \int_0^1 |f(t)| d\mu = $ Note that this is a space of {\bf equivalence classes of functions} rather than functions, as we can have $||f-g|| = 0$ but $f \neq g$ if $f$ and $g$ disagree on a set of ``measure" zero. Thus, each element of this space is a set of functions that are ``essentially" the same. We will drop the ``essentially" and keep this point in the back of our heads. Finally, we are only considering functions on $[0, 1)$, as the function could be considered periodic by copying the values of the function on $[0, 1)$ and pasting them onto the intervals $[1, 2), [2,3)$ etc. Similarly, functions without period 1 can be scaled to fit on this interval, and the analysis remains the same.
+\begin{exc}
+    Confirm that the inner product proposed above adheres to the four properties for complex inner products.
+\end{exc}
+
+\subsection*{The Fourier modes}
+
+Consider the class of functions of the following form:
+\begin{align*}
+    u_k(t) = e^{2\pi i k t}
+\end{align*}
+for $k \in \Z$. These are called the Fourier modes. It turns out that these functions form an orthonormal basis for $L_2([0,1))$.
+\begin{exc}
+    Prove that $\B = \{..., u_{-1}(\cdot), u_0(\cdot), u_1(\cdot), ...\}$ is an orthonormal set of vectors, in that $\ip{u_k}{u_l} = 0$ for $k \neq l$ and $\ip{u_k}{u_l} = 1$ for $k = l$.
+\end{exc}
+Every $f \in  L_2([0, 1))$ can be represented in this basis. How do we usually project a vector $x$ into an orthonormal bases $u_1, ..., u_n$ in linear algebra? Let $U = [u_1, ..., u_n]$ be the unitary matrix generated by column binding the basis vectors.
+\begin{align*}
+    x = UU^*x = \sum_{k=1}^n (u_k^*x) u_k = \sum_{k=1}^n \ip{x}{u_k} u_k
+\end{align*}
+In $L_2([0,1))$ with the basis of the Fourier modes, we can write
+\begin{align*}
+    \ip{f}{u_k} &= \int_0^1 f(t) \overline{e^{2\pi i k t}} d\mu\\
+    &= \int_0^1 f(t) e^{-2\pi i k t} d\mu\\
+    &= a_k
+\end{align*}
+The Fourier expansion of the function $f$ is given by
+\begin{align*}
+    f(t) = \sum_{k \in \Z} a_k e^{2\pi i k t} = \sum_{k \in \Z} \ip{f}{u_k} u_k(t)
+\end{align*}
+which is nothing but the {\bf projection} of $f$ onto the Fourier basis! So, to understand the Fourier expansion (and eventually the Fourier transform) the intuition of projecting vectors onto the subspace spanned by orthonormal vectors suffices. Another central concept of linear algebra is eigenvectors and eigenvalues. Do they have any significance in this setting?
+
+Consider the set of operators $H: L_2([0,1)) \rightarrow L_2([0,1))$ that are linear and time-invariant. Specifically,
+\begin{align*}
+    H(af + bg) = aHf + bHg
+\end{align*}
+and
+\begin{align*}
+    H(f(t-t_0)) = (Hf)(t - t_0)
+\end{align*}
+These are called the \{bf LTI systems\} in signal processing. They are mappings that operate on function spaces, and being linear, we can consider eigenvectors of these operatros. These eigenvectors turn out to be the Fourier modes themselves. Thus,
+\begin{align*}
+    H(e^{2\pi i k t}) = \lambda(k) e^{2\pi i k t}
+\end{align*}
+for some eigenvalue that depends only on $\lambda(k)$. Ignoring the issue of the infinite sum, this allows use to use these eigenvalues and the Fourier expansion to evaluate the output of any LTI system, as
+\begin{align*}
+    H(f(t)) = H\left(\sum_{k \in \Z} a_k e^{2\pi i k t}\right) = \sum_{k \in \Z} a_k H(e^{2\pi i k t}) = \sum_{k \in \Z} a_k \lambda(k) e^{2\pi i k t}
+\end{align*}
+In this basis, in order to apply the operator, we need only scale the coefficients. This should sound familiar, in that it is exactly the benefit of working with a diagonalizable matrix. If $A = SDS^{-1}$, the linear transformation described by $A$ reduces to just scaling in the basis given by the columns of $S$. In the following, we will use definitions that are not yet defined for infinite-dimensional spaces, but we can rely on intuition from finite dimensions to at least think about them. The eigenvectors of LTI systems form a basis for $L_2([0,1)$, so you can say they are {\bf diagonalizable}, with diagonal entries given by the $\lambda(k)$. In fact, because those eigenvectors are orthonormal, the LTI systems are unitarily diagonaliable (normal) operators. Moreover, because they are diagonalizable with the same eigenvectors, they are simulanteously diagonalizable. You should then not be surprised that LTI systems commute, in that
+\begin{align*}
+    HLf = LHf
+\end{align*}
+for systems $H$ and $L$.
+
+\subsection*{Other examples of Hilbert spaces}
+
+It is of note that Fourier analysis arose to solve problems of heat transfer and oscillatory motion, and the $L_2$ theory is a linear algebraic way of understanding ideas that had developed in different ways. Another field that can be imbued with linear algebra intuition is statistics. Consider the set of random variables $X$ with finite second moment $\E[X^2] < \infty$. This forms a Hilbert space with respect to the covariance inner product.
+\begin{align*}
+    \ip{X}{Y} = \Cov(X,Y)
+\end{align*}
+\begin{exc}
+    Prove that the covariance operator is an inner product.
+\end{exc}
+\begin{exc}
+    Prove that the set of finite second moment random variables is complete with respect to the metric induced by this inner product.
+\end{exc}
+\begin{exc}
+    How is the finite second moment condition for random variables related to the square-integrable condition for $L_2$?
+\end{exc}
+What is the norm of a random variable then?
+\begin{align*}
+    ||X|| = \sqrt{\ip{X}{X}} = \sqrt{\Cov(X,X)} = \sqrt{\Var(X)}
+\end{align*}
+The ``length" of a random variable is given by its standard deviation, and random variables are orthogonal if they are uncorrelated. With inner products, we have the ability to describe angles between vectors. A common formula regarding inner products
+\begin{align*}
+    \ip{u}{v} = ||u|| \cdot ||v|| \cos(\theta)
+\end{align*}
+where $\theta$ is the angle between vectors. Applying this to random variables, we have:
+\begin{align*}
+    \cos(\theta) = \frac{\ip{X}{Y}}{||X|| \cdot ||Y||} = \frac{\Cov(X,Y)}{\sqrt{\Var(X) \Var(Y)}} = \text{Cor}(X, Y)
+\end{align*}
+Correlation is just the cosine of the angle between random variables - consequently, it is bounded between -1 and 1.
+\begin{exm}
+    Consider a list of identically distributed random variables $Z_1, Z_2, Z_3$ such that $\text{Cor}(Z_i, Z_j) = \rho$ for all $i \neq j$. What are the bounds on $\rho$?
+    
+    While this may not be a formal proof, we will use the geometric intuition of the Hilbert space to work through this problem. Given any set of three vectors in Euclidean space that all have the same angle separating one another, what are the bounds on that angle? The angle could be 0, in that all vectors are pointing the same direction. Maximally, the angle could be $\frac{2\pi}{3}$ (see Figure \ref{fig:three_vecs}). The correlation is the cosine of this angle, giving us the interval
+    \begin{align*}
+        [\cos(\tfrac{2\pi}{3}), \cos(0)] = [-\tfrac{1}{2}, 1]
+    \end{align*}
+    
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\linewidth]{figures/three_vecs.png}
+        \caption{The three red vectors could be spaced maximally at an angle of $\theta = \frac{2\pi}{3}$ from one another, and minimally at $\theta = 0$.}
+        \label{fig:three_vecs}
+    \end{figure}
+    How can three random variables all have negative correlation with one another? Consider any identically distributed $X_1, X_2, X_3$ and define
+    \begin{align*}
+        Z_1 &= X_1 - \overline{X}\\
+        Z_2 &= X_2 - \overline{X}\\
+        Z_3 &= X_3 - \overline{X}
+    \end{align*}
+    where $\overline{X}$ is the sample mean of $X_1, X_2, X_3$. To maintain the same average, if one goes up, the others necessarily go down, explaining the pairwise negative correlation.
+\end{exm}
+
+There are many other examples in which working in a Hilbert space allows us to use geometry to thinking about our problems in a deeper way, such as the Reproducing Kernel Hilbert Space (RKHS) theory of machine learning (see the Appendix of \citet{nonpar}). If you are interested, I highly recommend Section 3.1 of \citet{fourier} for a formal version of the Fourier analysis ideas with proofs.
+
+\newpage
+
+\vspace{5mm}
+\bibliography{refs}
+%\bibliographystyle{IEEEtran}
+\bibliographystyle{plainnat}
+
+\newpage
 
 \end{document}
 
