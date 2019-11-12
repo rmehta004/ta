@@ -410,6 +410,8 @@ This means that the changes in $f(x)$ are sublinear in the changes in $x$. The c
     \end{proof}
 \end{obs}
 
+That concludes the review. I recommend doing problems from \citet{aksoy} to keep your skills up before reaching Chapter 5.
+
 Pointers for Homework 1:
 \begin{enumerate}
         \item Similarity implies sameness of rank, spectrum/charactaristic polynomial and determinant. None of the reverse implications hold.
@@ -937,7 +939,7 @@ With inner products and norms, we can induce metrics. Thus, every inner product 
     \item Any finite subset of vectors $b_1, ..., b_k \in \B$ are linearly independent.
     \item For all $v \in V$, $v = \alpha_1b_1 + ... +\alpha_k b_k$ for some finite subset of vectors $b_1, ..., b_k \in \B$ and $\alpha_1, ..., \alpha_k \in \K$.
 \end{itemize}
-This is known as a Hamel basis. Now, assume that there is a norm on $V$, and there is a countable set of vectors $\B = \{b_1, b_2, ...\}$. We can say that:
+This is known as a {bf Hamel or algebraic basis}. Now, assume that there is an inner product and hence norm on Hilbert space $V$, and there is a countable set of vectors $\B = \{b_1, b_2, ...\}$. We can say that:
 \begin{align*}
     v = \sum_{i=1}^\infty \alpha_i b_i 
 \end{align*}
@@ -945,17 +947,17 @@ if
 \begin{align*}
     \left|\left|\sum_{i=1}^n \alpha_i b_i - v\right|\right| \rightarrow 0
 \end{align*}
-as $n \rightarrow \infty$. Precisely, this is what is meant by the notation $v = \sum_{i=1}^\infty \alpha_i b_i$. This is an infinite linear combination. We say that $\B$ is a linearly independent set of vectors if
+as $n \rightarrow \infty$. Precisely, this is what is really meant by the notation $v = \sum_{i=1}^\infty \alpha_i b_i$, and nothing else. This is an infinite linear combination. We say that $\B$ is a linearly independent set of vectors if
 \begin{align*}
     \sum_{i=1}^\infty \alpha_i b_i = 0 \implies \alpha_i = 0 \ \forall i
 \end{align*}
-Using these ideas, a countable basis for a normed linear space can be defined using the new definitions of linear combinations and linear independence. What is a canonical example of a countable basis for a NLS $V$? $V$ must be infinite-dimensional, as any finite dimensional linear space over $\K$ is isomorphic to $\K^n$, which has a finite basis. A common example is the Fourier modes $b_k(\cdot) = e^{2\pi i k f_0 \cdot}$ where $f_0$ is the fundamental frequency in Hz and $k \in \Z$ for some class of periodic functions $\{f(\cdot)\}$ which we will explore later.
+Using these ideas, a countable basis for a normed linear space can be defined using the new definitions of linear combinations and linear independence. This basis is called a {\bf Hilbert basis}, in that convergence holds with respect to the induced distance. What is a canonical example of a countable basis for a NLS $V$? $V$ must be infinite-dimensional, as any finite dimensional linear space over $\K$ is isomorphic to $\K^n$, which has a finite basis. A common example is the Fourier modes $b_k(\cdot) = e^{2\pi i k f_0 \cdot}$ where $f_0$ is the fundamental frequency in Hz and $k \in \Z$ for some class of periodic functions $\{f(\cdot)\}$ which we will explore later.
 
-\subsection*{The space $L_2$}
+\subsection*{The space $L^2([0, 1))$}
 
 Now, we will give an example of infinite-dimensional vector space with a norm and inner product. Consider the set of functions
 \begin{align*}
-    L_2([0,1)) = \{f : \int_{[0,1]} |f(t)|^2 d\mu < \infty \}
+    L^2([0,1)) = \{f : \int_{[0,1]} |f(t)|^2 d\mu < \infty \}
 \end{align*}
 where the $\int \cdot \ d\mu$ notation on the right refers to Lebesgue integration (don't worry if you haven't seen this before, just think if it as the integration you are used to). This is actually a Hilbert space, with inner product
 \begin{align*}
@@ -965,7 +967,10 @@ and norm
 \begin{align*}
     ||f|| = \sqrt{\ip{f}{f}} = \sqrt{\int_0^1 |f(t)|^2 d\mu}
 \end{align*}
-$L_2([0,1))$ is only complete with this choice of norm. It is not a Hilbert space with respect to say $||f||_1 = \int_0^1 |f(t)| d\mu = $ Note that this is a space of {\bf equivalence classes of functions} rather than functions, as we can have $||f-g|| = 0$ but $f \neq g$ if $f$ and $g$ disagree on a set of ``measure" zero. Thus, each element of this space is a set of functions that are ``essentially" the same. We will drop the ``essentially" and keep this point in the back of our heads. Finally, we are only considering functions on $[0, 1)$, as the function could be considered periodic by copying the values of the function on $[0, 1)$ and pasting them onto the intervals $[1, 2), [2,3)$ etc. Similarly, functions without period 1 can be scaled to fit on this interval, and the analysis remains the same.
+\begin{exc}
+    Prove that $L^2([0, 1))$ is a vector space.
+\end{exc}
+$L^2([0,1))$ is only complete with this choice of norm. It is not a Hilbert space with respect to say $||f||_1 = \int_0^1 |f(t)| d\mu = $ Note that this is a space of {\bf equivalence classes of functions} rather than functions, as we can have $||f-g|| = 0$ but $f \neq g$ if $f$ and $g$ disagree on a set of ``measure" zero. Thus, we get around this by letting each element of this space be a set of functions that are ``essentially" the same. We identify these functions with one another. We will drop the ``essentially" and keep this point in the back of our heads. Finally, we are only considering functions on $[0, 1)$, as the function could be considered periodic by copying the values of the function on $[0, 1)$ and pasting them onto the intervals $[1, 2), [2,3)$ etc. Similarly, functions without period 1 can be scaled to fit on this interval, and the analysis remains the same.
 \begin{exc}
     Confirm that the inner product proposed above adheres to the four properties for complex inner products.
 \end{exc}
@@ -976,62 +981,74 @@ Consider the class of functions of the following form:
 \begin{align*}
     u_k(t) = e^{2\pi i k t}
 \end{align*}
-for $k \in \Z$. These are called the Fourier modes. It turns out that these functions form an orthonormal basis for $L_2([0,1))$.
+for $k \in \Z$. These are called the Fourier modes. It turns out that these functions form an orthonormal (Hilbert) basis for $L^2([0,1))$.
 \begin{exc}
     Prove that $\B = \{..., u_{-1}(\cdot), u_0(\cdot), u_1(\cdot), ...\}$ is an orthonormal set of vectors, in that $\ip{u_k}{u_l} = 0$ for $k \neq l$ and $\ip{u_k}{u_l} = 1$ for $k = l$.
 \end{exc}
-Every $f \in  L_2([0, 1))$ can be represented in this basis. How do we usually project a vector $x$ into an orthonormal bases $u_1, ..., u_n$ in linear algebra? Let $U = [u_1, ..., u_n]$ be the unitary matrix generated by column binding the basis vectors.
+Every $f \in  L^2([0, 1))$ can be represented in this basis. How do we usually project a vector $x$ into an orthonormal bases $u_1, ..., u_n$ in linear algebra? Let $U = [u_1, ..., u_n]$ be the unitary matrix generated by column binding the basis vectors.
 \begin{align*}
     x = UU^*x = \sum_{k=1}^n (u_k^*x) u_k = \sum_{k=1}^n \ip{x}{u_k} u_k
 \end{align*}
-In $L_2([0,1))$ with the basis of the Fourier modes, we can write
+In $L^2([0,1))$ with the basis of the Fourier modes, we can write what is known as the {\bf analysis equation} in signal processing:
 \begin{align*}
-    \ip{f}{u_k} &= \int_0^1 f(t) \overline{e^{2\pi i k t}} d\mu\\
+    a_k &= \int_0^1 f(t) \overline{e^{2\pi i k t}} d\mu\\
     &= \int_0^1 f(t) e^{-2\pi i k t} d\mu\\
-    &= a_k
+    &= \ip{f}{u_k}
 \end{align*}
 The Fourier expansion of the function $f$ is given by
 \begin{align*}
     f(t) = \sum_{k \in \Z} a_k e^{2\pi i k t} = \sum_{k \in \Z} \ip{f}{u_k} u_k(t)
 \end{align*}
-which is nothing but the {\bf projection} of $f$ onto the Fourier basis! So, to understand the Fourier expansion (and eventually the Fourier transform) the intuition of projecting vectors onto the subspace spanned by orthonormal vectors suffices. Another central concept of linear algebra is eigenvectors and eigenvalues. Do they have any significance in this setting?
+which is nothing but the {\bf orthogonal projection} of $f$ onto the Fourier basis! So, to understand the Fourier expansion the intuition of projecting vectors onto the subspace spanned by orthonormal vectors (as in Figure \ref{fig:proj}) suffices. Another central concept of linear algebra is eigenvectors and eigenvalues. Do they have any significance in this setting?
 
-Consider the set of operators $H: L_2([0,1)) \rightarrow L_2([0,1))$ that are linear and time-invariant. Specifically,
+Consider the set of operators $H: L^2([0,1)) \rightarrow L^2([0,1))$ that are linear and time-invariant. Specifically, for $f, g \in L^2([0,1))$ and $a, b \in \K$:
 \begin{align*}
     H(af + bg) = aHf + bHg
 \end{align*}
 and
 \begin{align*}
-    H(f(t-t_0)) = (Hf)(t - t_0)
+    H[f(t-t_0)] = (Hf)(t - t_0)
 \end{align*}
-These are called the \{bf LTI systems\} in signal processing. They are mappings that operate on function spaces, and being linear, we can consider eigenvectors of these operatros. These eigenvectors turn out to be the Fourier modes themselves. Thus,
+where $f(t - t_0)$ shifts the function rightward by $t_0$. These are called the {\bf LTI systems} in signal processing. They are mappings that operate on function spaces, and being linear, we can consider eigenvectors of these operators. These eigenvectors turn out to be the Fourier modes themselves. Thus,
 \begin{align*}
-    H(e^{2\pi i k t}) = \lambda(k) e^{2\pi i k t}
+    H(e^{2\pi i k t}) = \lambda_k e^{2\pi i k t}
 \end{align*}
-for some eigenvalue that depends only on $\lambda(k)$. Ignoring the issue of the infinite sum, this allows use to use these eigenvalues and the Fourier expansion to evaluate the output of any LTI system, as
+for some eigenvalue that depends only on $k$. Consider an LTI system that is also continuous with respect to the $L^2$ norm (make sure you understand what this means). We can use these eigenvalues and the Fourier expansion to evaluate the output of any LTI system, as
 \begin{align*}
-    H(f(t)) = H\left(\sum_{k \in \Z} a_k e^{2\pi i k t}\right) = \sum_{k \in \Z} a_k H(e^{2\pi i k t}) = \sum_{k \in \Z} a_k \lambda(k) e^{2\pi i k t}
+    H[f(t)] &= H\left(\sum_{k \in \Z} a_k e^{2\pi i k t}\right)\\
+    &= H\left(\lim_{N \rightarrow \infty}\sum_{k = -N}^N a_k e^{2\pi i k t}\right)\\
+    &= \lim_{N \rightarrow \infty} H\left(\sum_{k = -N}^N a_k e^{2\pi i k t}\right)\\
+    &= \lim_{N \rightarrow \infty} \sum_{k = -N}^N a_k H(e^{2\pi i k t})\\
+    &= \lim_{N \rightarrow \infty} \sum_{k = -N}^N a_k \lambda(k) e^{2\pi i k t}\\
+    &= \sum_{k \in \Z} a_k \lambda_k e^{2\pi i k t}
 \end{align*}
-In this basis, in order to apply the operator, we need only scale the coefficients. This should sound familiar, in that it is exactly the benefit of working with a diagonalizable matrix. If $A = SDS^{-1}$, the linear transformation described by $A$ reduces to just scaling in the basis given by the columns of $S$. In the following, we will use definitions that are not yet defined for infinite-dimensional spaces, but we can rely on intuition from finite dimensions to at least think about them. The eigenvectors of LTI systems form a basis for $L_2([0,1)$, so you can say they are {\bf diagonalizable}, with diagonal entries given by the $\lambda(k)$. In fact, because those eigenvectors are orthonormal, the LTI systems are unitarily diagonaliable (normal) operators. Moreover, because they are diagonalizable with the same eigenvectors, they are simulanteously diagonalizable. You should then not be surprised that LTI systems commute, in that
+In this basis, in order to apply the operator, we need only scale the Fourier coefficients $a_k$ by $\lambda_k$. This should sound familiar, in that it is exactly the benefit of working with a diagonalizable matrix. If $A = SDS^{-1}$, the linear transformation described by $A$ reduces to just scaling in the basis given by the columns of $S$. 
+
+The eigenvectors of LTI systems form a basis for $L^2([0,1)$ (akin to $n$ linearly independent eigenvectors of a matrix), so you we say that the LTI systems are {\bf diagonalizable}, with ``diagonal entries" (i.e. eigenvalues) given by the $\lambda_k$. In fact, because those eigenvectors are orthonormal, the LTI systems are unitarily diagonaliable (normal) operators.
+
+What exactly is unitary here? Because matrices are called unitary, there must be a linear operator that is unitary. This is none other than that which projects the vector $f$ onto the orthonormal basis described by the Fourier modes - or, the Fourier expansion. Moreover, because the LTI systems are diagonalizable with the same eigenvectors, they are simultaneously diagonalizable. You should then not be surprised that LTI systems commute, in that
 \begin{align*}
     HLf = LHf
 \end{align*}
-for systems $H$ and $L$.
+for operators $H$ and $L$. There is a much easier way to show they commute by using the convolution with the impulse response. However, this direction was intended to draw the connection to matrices.
 
-\subsection*{Other examples of Hilbert spaces}
+\subsection*{Another example of Hilbert space}
 
-It is of note that Fourier analysis arose to solve problems of heat transfer and oscillatory motion, and the $L_2$ theory is a linear algebraic way of understanding ideas that had developed in different ways. Another field that can be imbued with linear algebra intuition is statistics. Consider the set of random variables $X$ with finite second moment $\E[X^2] < \infty$. This forms a Hilbert space with respect to the covariance inner product.
+It is of note that Fourier analysis arose to solve problems of heat transfer and oscillatory motion, and the $L^2$ theory is a linear algebraic way of understanding ideas that had developed in different ways. Another field that can be imbued with linear algebra intuition is statistics. Consider the set of random variables $X$ with finite second moment $\EV[X^2] < \infty$. This forms a Hilbert space with respect to the covariance inner product.
 \begin{align*}
     \ip{X}{Y} = \Cov(X,Y)
 \end{align*}
 \begin{exc}
-    Prove that the covariance operator is an inner product.
+    Show that space of random variables with finite second moment is a vector space.
+\end{exc}
+\begin{exc}
+    Show that the covariance operator is an inner product.
 \end{exc}
 \begin{exc}
     Prove that the set of finite second moment random variables is complete with respect to the metric induced by this inner product.
 \end{exc}
 \begin{exc}
-    How is the finite second moment condition for random variables related to the square-integrable condition for $L_2$?
+    How is the finite second moment condition for random variables related to the square-integrable condition for $L^2$?
 \end{exc}
 What is the norm of a random variable then?
 \begin{align*}
@@ -1043,24 +1060,26 @@ The ``length" of a random variable is given by its standard deviation, and rando
 \end{align*}
 where $\theta$ is the angle between vectors. Applying this to random variables, we have:
 \begin{align*}
-    \cos(\theta) = \frac{\ip{X}{Y}}{||X|| \cdot ||Y||} = \frac{\Cov(X,Y)}{\sqrt{\Var(X) \Var(Y)}} = \text{Cor}(X, Y)
+    \cos(\theta) &= \frac{\ip{X}{Y}}{||X|| \cdot ||Y||} = \frac{\Cov(X,Y)}{\sqrt{\Var(X) \Var(Y)}} = \text{Cor}(X, Y)\\
+    \implies \theta &= \arccos \text{Cor}(X, Y)
 \end{align*}
 Correlation is just the cosine of the angle between random variables - consequently, it is bounded between -1 and 1.
 \begin{exm}
     Consider a list of identically distributed random variables $Z_1, Z_2, Z_3$ such that $\text{Cor}(Z_i, Z_j) = \rho$ for all $i \neq j$. What are the bounds on $\rho$?
     
-    While this may not be a formal proof, we will use the geometric intuition of the Hilbert space to work through this problem. Given any set of three vectors in Euclidean space that all have the same angle separating one another, what are the bounds on that angle? The angle could be 0, in that all vectors are pointing the same direction. Maximally, the angle could be $\frac{2\pi}{3}$ (see Figure \ref{fig:three_vecs}). The correlation is the cosine of this angle, giving us the interval
+    We will use the geometric intuition of the Hilbert space to work through this problem. Because there are only three vectors, we can consider them to be lying on the finite-dimensional subspace spanned by each of them. We can represent these vectors in an orthonormal basis by Gram-Schmidt (think of an orthonormal Hilbert basis for this space). This subspace is isomorphic to $\R^3$, and without loss of generality we can consider the standard basis.
+    
+    Given any set of three vectors in Euclidean space that all have the same angle $\theta$ separating one another, what are the bounds on that angle? The angle could be 0, in that all vectors are pointing the same direction. Maximally, the angle could be $\frac{2\pi}{3}$ (see Figure \ref{fig:three_vecs}). The correlation is the cosine of this angle, giving us the interval
     \begin{align*}
         [\cos(\tfrac{2\pi}{3}), \cos(0)] = [-\tfrac{1}{2}, 1]
     \end{align*}
-    
     \begin{figure}
         \centering
         \includegraphics[width=0.5\linewidth]{figures/three_vecs.png}
         \caption{The three red vectors could be spaced maximally at an angle of $\theta = \frac{2\pi}{3}$ from one another, and minimally at $\theta = 0$.}
         \label{fig:three_vecs}
     \end{figure}
-    How can three random variables all have negative correlation with one another? Consider any identically distributed $X_1, X_2, X_3$ and define
+    How can three random variables all have negative correlation with one another? Consider any $X_1, X_2, X_3$ and define
     \begin{align*}
         Z_1 &= X_1 - \overline{X}\\
         Z_2 &= X_2 - \overline{X}\\
@@ -1068,8 +1087,13 @@ Correlation is just the cosine of the angle between random variables - consequen
     \end{align*}
     where $\overline{X}$ is the sample mean of $X_1, X_2, X_3$. To maintain the same average, if one goes up, the others necessarily go down, explaining the pairwise negative correlation.
 \end{exm}
+\begin{exc}
+    A much more general question can be asked (which is also my favorite statistics question). There are three random variables $X, Y, Z$ with correlations $\rho_{XY}, \rho_{YZ}, \rho_{XZ}$. What is the full set of values in $[-1,1]^3$ that $(\rho_{XY}, \rho_{YZ}, \rho_{XZ})$ can take on? A beautiful answer can be found \href{https://math.stackexchange.com/questions/284877/correlation-between-three-variables-question}{here}, which makes similar use of geometric Hilbert space ideas.
+\end{exc}
 
-There are many other examples in which working in a Hilbert space allows us to use geometry to thinking about our problems in a deeper way, such as the Reproducing Kernel Hilbert Space (RKHS) theory of machine learning (see the Appendix of \citet{nonpar}). If you are interested, I highly recommend Section 3.1 of \citet{fourier} for a formal version of the Fourier analysis ideas with proofs.
+There are many other examples in which working in a Hilbert space allows us to use geometry to thinking about our problems in a deeper way, such as the Reproducing Kernel Hilbert Space (RKHS) theory in machine learning (see the Appendix of \citet{nonpar}), and Section 3.1 of \citet{fourier} for a detailed version of the Fourier analysis ideas. If you're interested in some of these applications, definitely take Harmonic Analysis (AS.110.433) or High-Dimensional Approximation, Probability, and Statistical Learning (EN.553.738) with Dr. Mauro Maggioni!
+
+\paragraph{Acknowledgement} I am grateful to Dr. Nicolas Charon for generously reviewing this week's notes and providing feedback (to make up for my lack of infinite-dimensional experience)!
 
 \newpage
 
