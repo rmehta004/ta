@@ -1050,6 +1050,9 @@ It is of note that Fourier analysis arose to solve problems of heat transfer and
 \begin{exc}
     How is the finite second moment condition for random variables related to the square-integrable condition for $L^2$?
 \end{exc}
+\begin{exc}
+    Can you come up with an orthonormal basis for this Hilbert space?
+\end{exc}
 What is the norm of a random variable then?
 \begin{align*}
     ||X|| = \sqrt{\ip{X}{X}} = \sqrt{\Cov(X,X)} = \sqrt{\Var(X)}
@@ -1065,7 +1068,7 @@ where $\theta$ is the angle between vectors. Applying this to random variables, 
 \end{align*}
 Correlation is just the cosine of the angle between random variables - consequently, it is bounded between -1 and 1.
 \begin{exm}
-    Consider a list of identically distributed random variables $Z_1, Z_2, Z_3$ such that $\text{Cor}(Z_i, Z_j) = \rho$ for all $i \neq j$. What are the bounds on $\rho$?
+    Consider a list of identically distributed random variables $Z_1, Z_2, Z_3$ such that $\text{Cor}(Z_i, Z_j) = \rho$ for all $i \neq j$. What are the bounds on $\rho$?\\
     
     We will use the geometric intuition of the Hilbert space to work through this problem. Because there are only three vectors, we can consider them to be lying on the finite-dimensional subspace spanned by each of them. We can represent these vectors in an orthonormal basis by Gram-Schmidt (think of an orthonormal Hilbert basis for this space). This subspace is isomorphic to $\R^3$, and without loss of generality we can consider the standard basis.
     
@@ -1087,11 +1090,44 @@ Correlation is just the cosine of the angle between random variables - consequen
     \end{align*}
     where $\overline{X}$ is the sample mean of $X_1, X_2, X_3$. To maintain the same average, if one goes up, the others necessarily go down, explaining the pairwise negative correlation.
 \end{exm}
-\begin{exc}
-    A much more general question can be asked (which is also my favorite statistics question). There are three random variables $X, Y, Z$ with correlations $\rho_{XY}, \rho_{YZ}, \rho_{XZ}$. What is the full set of values in $[-1,1]^3$ that $(\rho_{XY}, \rho_{YZ}, \rho_{XZ})$ can take on? A beautiful answer can be found \href{https://math.stackexchange.com/questions/284877/correlation-between-three-variables-question}{here}, which makes similar use of geometric Hilbert space ideas.
-\end{exc}
+\begin{exm}
+    A much more general question can be asked (which is also my favorite statistics question). There are three random variables $X, Y, Z$ with correlations $\rho_{XY}, \rho_{YZ}, \rho_{XZ}$. What is the full set of values in $[-1,1]^3$ that $(\rho_{XY}, \rho_{YZ}, \rho_{XZ})$ can take on?\\ 
+    
+    Without loss of generality, we can assume that $X$, $Y$, and $Z$ have unit variance, as that will not change the correlations. We can phrase this as ``what are the bounds on $\rho_{XZ}$ given $\rho_{XY}$ and $\rho_{YZ}$"? We can write 
+    \begin{align*}
+        X &= \ip{X}{Y}Y + O_Y^X = \rho_{XY}Y + O_Y^X\\
+        Z &= \ip{Z}{Y}Y + O_Y^Z = \rho_{ZY}Z + O_Y^Z
+    \end{align*}
+    where $O_Y^X$ and $O_Y^Z$ are orthogonal to $Y$ (uncorrelated with $Y$). This is an orthogonal projection on $Y$ and its orthogonal space. Then
+    \begin{equation}
+        \rho_{XZ} = \ip{X}{Z} = \ip{\rho_{XY}Y + O_Y^X}{\rho_{ZY}Y + O_Y^Z} = \rho_{XY}\rho_{ZY} + \ip{O_Y^X}{O_Y^Z}
+        \label{eqn:corr}
+    \end{equation}
+    To handle $\ip{O_Y^X}{O_Y^Z}$, observe that
+    \begin{align*}
+        1 = \ip{X}{X} = \ip{\rho_{XY}Y + O_Y^X}{ \rho_{XY}Y + O_Y^X} = \rho_{XY}^2 + \ip{O_Y^X}{O_Y^X}
+    \end{align*}
+    meaning that
+    \begin{align*}
+        \ip{O_Y^X}{O_Y^X} = 1 - \rho_{XY}^2
+    \end{align*}
+    Similarly,
+    \begin{align*}
+        \ip{O_Y^Z}{O_Y^Z} = 1 - \rho_{ZY}^2
+    \end{align*}
+    We can then use the Cauchy-Schwarz inequality to see that
+    \begin{align*}
+        |\ip{O_Y^X}{O_Y^Z}| &\leq \sqrt{\ip{O_Y^X}{O_Y^X} \cdot \ip{O_Y^Z}{O_Y^Z}}\\
+        &= \sqrt{(1 - \rho_{XY}^2)(1 - \rho_{ZY}^2)}
+    \end{align*}
+    Finally, we have from \ref{eqn:corr} that
+    \begin{align*}
+        \rho_{XZ} \in \left[\rho_{XY}\rho_{ZY} - \sqrt{(1 - \rho_{XY}^2)(1 - \rho_{ZY}^2)}, \rho_{XY}\rho_{ZY} + \sqrt{(1 - \rho_{XY}^2)(1 - \rho_{ZY}^2)}\right]
+    \end{align*}
+    concluding the problem. Similar bounds can be placed on the other correlations as well. I would credit this answer entirely to this \href{https://math.stackexchange.com/questions/284877/correlation-between-three-variables-question}{user}, but there are some errors in their explanation of Hilbert space as well as some incorrect assumptions. (Can you find them?)
+\end{exm}
 
-There are many other examples in which working in a Hilbert space allows us to use geometry to thinking about our problems in a deeper way, such as the Reproducing Kernel Hilbert Space (RKHS) theory in machine learning (see the Appendix of \citet{nonpar}), and Section 3.1 of \citet{fourier} for a detailed version of the Fourier analysis ideas. If you're interested in some of these applications, definitely take Harmonic Analysis (AS.110.433) or High-Dimensional Approximation, Probability, and Statistical Learning (EN.553.738) with Dr. Mauro Maggioni!
+There are many other examples in which working in a Hilbert space allows us to use geometry to thinking about our problems in a deeper way, such as the Reproducing Kernel Hilbert Space (RKHS) theory in machine learning (see the Appendix of \citet{nonpar}), wavefunctions and observables in quantum mechanics (Chapter 3 of \citet{griffiths}), and Section 3.1 of \citet{fourier} for a detailed version of the Fourier analysis ideas. If you're interested in some of these applications, definitely take Harmonic Analysis (AS.110.433) or High-Dimensional Approximation, Probability, and Statistical Learning (EN.553.738) with Dr. Mauro Maggioni!
 
 \paragraph{Acknowledgement} I am grateful to Dr. Nicolas Charon for generously reviewing this week's notes and providing feedback (to make up for my lack of infinite-dimensional experience)!
 
