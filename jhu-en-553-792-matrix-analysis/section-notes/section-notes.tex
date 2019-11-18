@@ -41,11 +41,12 @@
 \newcommand{\E}{\exists}
 \newcommand{\sse}{\subseteq}
 \newcommand{\union}{\cup}
-\newcommand{\meet}{\wedge}
 \newcommand{\ra}{\rightarrow}
 \newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
 \newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
 \newcommand{\ip}[2]{\left\langle #1, #2\right\rangle}
+\DeclareMathOperator*{\argmax}{arg\,max\ }
+\DeclareMathOperator*{\argmin}{arg\,min\ }
 
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[section]
@@ -455,6 +456,7 @@ If $A = A^T$, then it is real orthogonally diagonalizable, with the eigenvectors
 \end{figure}
 
 \subsection*{Application: numerical optimization}
+\label{sec:opti}
 
 Let $f: \R^d \rightarrow \R$ be a twice-differentiable function, with
 \begin{align*}
@@ -1131,6 +1133,88 @@ There are many other examples in which working in a Hilbert space allows us to u
 
 \paragraph{Acknowledgement} I am grateful to Dr. Nicolas Charon for generously reviewing this week's notes and providing feedback (to make up for my lack of infinite-dimensional experience)!
 
+\section{November 18, 2019}
+
+We will start with a brief dive into condition number of stability, followed by review of Chapter 5.
+
+\subsection*{Condition number}
+
+We know the definition of condition number $\kappa$ of invertible $A \in M_n$ as
+\begin{align*}
+    \kappa_{||\cdot||}(A) = ||A||\cdot||A^{-1}||
+\end{align*}
+We will drop the $||\cdot||$ subscript and assume that the norm is taken to be the spectral (induced $2,2$) norm. Then
+\begin{align*}
+    \kappa(A) = \frac{\sigma_1(A)}{\sigma_n(A)},
+\end{align*}
+or the ratio of the largest singular value to the smallest. The condition number is lower bounded by 1, and we know that low condition number is synonymous with ``stability", whereas high condition number is synonymous with ``instability". Stability can refer to {\bf numerical}, {\bf statistical}, {\bf optimization}, or other perspectives. We have covered the numerical perspective in class, but you should try to interpret the other views of condition number on your own. We will not cover these in detail, as the class material is getting quite technical. As a brief note, let us first understand what types of matrices achieve the lower bound of the (spectral) conditional number.
+
+Clearly, we must have all singular values being the same. Let $A \in M_n$ be square, and take its SVD.
+\begin{align*}
+    A = U\Sigma V^*
+\end{align*}
+Because the singular values are the same and positive (as $A$ is invertible), $\Sigma = c I$ for some $c > 0$. Then,
+\begin{align*}
+    A = U c I V^* = c (U V^*) = c W
+\end{align*}
+where $W = UV^*$ is a unitary matrix. As a restatement,
+\begin{obs}
+    Let $A \in M_n$. Then $\kappa(A) = 1 \iff A = cW$ for $c > 0$ and $W$ unitary.
+\end{obs}
+Geometrically, this means that the tranformation $x \mapsto Ax$ first rotates $x$, then stretches each elements by the same amount. It is clear then that if $A$ is P.S.D. (hence P.D. for $\kappa$ to be defined), then $U = V \implies W = I$. Taking the statistical view, we have the following observation.
+\begin{obs}
+    Let $x$ be a non-degenerate random variable with covariance matrix $\Sigma$. Then $\kappa(\Sigma) = 1$ if, and only if, $\Sigma = \sigma^2 I$ for some $\sigma^2 \geq 0$.
+\end{obs}
+Thus, we have a random variable with uncorrelated dimensions that all contribute equally to the total variance. If we plotted simulated data from such a distribution, we would expect spherical level curves. Students of statistics will understand this to be a ``nicely-behaved", stable random variable in some sense.
+
+As for the optimization perspective, imagine a twice-differentiable function $f$ to be well-approximated by a quadratric form in the neighborhood of a local minimum (see Section \ref{sec:opti}). We already convinced ourselves that the major axes of the elliptical level curves corresponded to eigenvectors of the Hessian $\nabla^2 f$ (we made the quadratic comment so that we can assume similar/the same Hessian for any $x$ in this neighborhood). The longer axes corresponded to small eigenvalues, whereas the shorter axes corresponded to large eigenvalues (quick increase or decrease). Another observation concerning Hermitian matrices is in order.
+\begin{obs}
+    Let $A$ be Hermitian. Then
+    \begin{enumerate}
+        \item $\{\sigma_i : i = 1, ..., n\}$ = $\{|\lambda_k| : k = 1, ..., n\}$.
+        \item $\kappa(A) = \frac{\max_k |\lambda_k|}{\min_k |\lambda_k|}$
+    \end{enumerate}
+\end{obs}
+The set of singular values is the same as the set of modulus eigenvalues (check this on your own). From this, we can observe that if the condition number of the Hessian is large, then the level sets of the function will be highly oblong. On the other hand, if the condition number of the Hessian is close to 1, then the level sets will be spherical. This has implications for gradient descent-type algorithms, as seen in Figure \ref{fig:grad_desc}.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/grad_desc.png}
+    \caption{These are the level curves of a two dimensional quadratic function $f(x_1, x_2)$ with minimum at $(0,0)$. The lines $x_2 = x_1$ and $x_2 = -x_1$ are the spans of the two eigenvectors of the Hessian $\nabla^2 f$. Because this matrix is ill-conditioned, the level sets are oblong, and gradient descent wants to move in the direction posed by the spherical approximation of the Hessian, slowing down convergence.}
+    \label{fig:grad_desc}
+\end{figure}
+To analyze this a little more closely, consider the function below on $x \in \R^d$.
+\begin{align*}
+    f(x) = c + b^T x + \frac{1}{2}x^T A x
+\end{align*}
+Given iterate $x_t$, the direction $p$ of the minimizer solves
+\begin{align*}
+    p = \argmin_{p \in \R^d} g(x_t)^T p + \frac{1}{2}p^T A p,
+\end{align*}
+in that $p = -\frac{1}{2}A^{-1} g(x_t)$ and $x_{t+1} = x_t + p$ is the minimum. The negative gradient direction $-\frac{1}{2}g(x_t)$ on the other hand solves
+\begin{align*}
+    p = \argmin_{p \in \R^d} g(x_t)^T p + \frac{1}{2}p^T I p
+\end{align*}
+So, gradient descent implicitly assumes that if the Hessian is P.D., it is well approximated by (a scalar multiple) of the identity, and would chase the minimum if that assumption was correct, also seen in \ref{fig:grad_desc}. When this assumption is not satisfied, and condition number of the Hessian is large, the iterates oscillate and are unstable in this sense. Note that these results are all with respect to the spectral norm, which is the canoncial norm when talking about condition number. A good reference for singular values, eigenvalues, and stability is actually the \texttt{MATLAB} \href{https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/moler/eigs.pdf}{documentation} on the topic.
+
+\subsection*{Chapter 5 review}
+
+Like before, this is a high-level enumeration of Chapter 5 topics. It's important to spend time with TAs during section and office hours fully understanding the material, as opposed to just repeating it.
+\begin{itemize}
+    \item Inner product, normed linear, (induced) metric spaces. (Hilbert and Banach spaces.)
+    \item Cauchy-Schwarz and reverse triangle inequality.
+    \item Finite dimensional normed linear spaces.
+    \item Equivalent norms and convergence.
+    \item Linear maps and functionals.
+    \item Boundedness and continuity of linear maps.
+    \item Operator norm, space of linear maps/dual space as an NLS.
+    \item Special operator norms, dual norms, $l_p$ norms.
+    \item Hahn-Banach theorem.
+    \item Matrix norms and spectral radius.
+    \item Condition number, linear systems, and stability.
+    \item Matrix and vector sequences and series.
+    \item Absolute, monotone norms, and the diagonal property.
+    \item Monotone norms and noisey eigenvalues.
+\end{itemize}
 \newpage
 
 \vspace{5mm}
