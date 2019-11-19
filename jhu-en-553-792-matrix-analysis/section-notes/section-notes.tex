@@ -34,6 +34,7 @@
 \newcommand{\K}{\ensuremath{\mathbb K}}
 \newcommand{\Z}{\ensuremath{\mathbb Z}}
 \newcommand{\B}{\ensuremath{\mathcal B}}
+\renewcommand{\H}{\ensuremath{\mathcal H}}
 \newcommand{\EV}{\ensuremath{\mathbb E}}
 \newcommand{\Var}{\text{Var}}
 \newcommand{\Cov}{\text{Cov}}
@@ -1215,6 +1216,45 @@ Like before, this is a high-level enumeration of Chapter 5 topics. It's importan
     \item Absolute, monotone norms, and the diagonal property.
     \item Monotone norms and noisey eigenvalues.
 \end{itemize}
+
+\subsection*{Chapter 5 exercises}
+
+For the following exercise, you will need this theorem.
+\begin{thm}[Riesz Representation Theorem]
+    Let $\H$ be a Hilbert space over $\K$. Let $L : \H \rightarrow \K$ be a linear functional on $\H$. Then, $L$ is continuous if and only if there exists a $\phi_L \in \H$ such that $L(h) = \ip{h}{\phi_L}_{\H}$ for all $h \in \H$.
+\end{thm}
+We covered this theorem in class, however, we only stated and proved the theorem when $\H$ was {\bf finite-dimensional}.
+\begin{exc}
+    Let $V$ be a vector space over $\R$, and let $\H = \{h : V \rightarrow \R\}$ be a Hilbert space (of functions). Let $L_x$ denote the point evaluation functional, i.e. $L_x(h) = h(x)$. Prove that $L_x$ is continuous if and only if for all $x \in V$, there is a $\phi(x) \in \H$ such that $h(x) = \ip{h}{\phi(x)}$. Such an $\H$ is called a reproducing kernel Hilbert space (RKHS). 
+\end{exc}
+
+\begin{exc}
+    Let $V$ be the space of quadratic functions $f(x) = ax^2 + bx + c$ on $\R$. Some up with a basis for $V$. Is $V$ finite-dimensional? If so, write the differentiation operator $D(f) = f'(x)$ as a matrix in this basis.
+\end{exc}
+
+\begin{exc}
+    Of the following, which are vector spaces?
+    \begin{enumerate}
+        \item The set of normal matrices.
+        \item The set of simultaneously diagonalizable matrices.
+        \item The set of pairwise commuting matrices.
+    \end{enumerate}
+\end{exc}
+
+Let $||\cdot||$ be a norm on $\C^n$.
+
+\begin{exc}
+    Show that if $||\cdot||$ is monotone, then it is absolute.
+\end{exc}
+
+\begin{exc}
+    Show that if $||\cdot||$ is absolute, then $||\cdot||^D$ absolute.
+\end{exc}
+
+\begin{exc}
+    Using the previous exercise, show that if $||\cdot||$ is absolute, then it is monotone.
+\end{exc}
+
 \newpage
 
 \vspace{5mm}
