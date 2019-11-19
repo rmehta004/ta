@@ -1219,41 +1219,92 @@ Like before, this is a high-level enumeration of Chapter 5 topics. It's importan
 
 \subsection*{Chapter 5 exercises}
 
-For the following exercise, you will need this theorem.
+For the first exercise, you will need this theorem.
 \begin{thm}[Riesz Representation Theorem]
     Let $\H$ be a Hilbert space over $\K$. Let $L : \H \rightarrow \K$ be a linear functional on $\H$. Then, $L$ is continuous if and only if there exists a $\phi_L \in \H$ such that $L(h) = \ip{h}{\phi_L}_{\H}$ for all $h \in \H$.
 \end{thm}
-We covered this theorem in class, however, we only stated and proved the theorem when $\H$ was {\bf finite-dimensional}.
+We covered this theorem in class, however, we only stated and proved the theorem when $\H$ was {\bf finite-dimensional}. Otherwise, it is exactly the same. The intuition should be clear in finite dimensions.
 \begin{exc}
     Let $V$ be a vector space over $\R$, and let $\H = \{h : V \rightarrow \R\}$ be a Hilbert space (of functions). Let $L_x$ denote the point evaluation functional, i.e. $L_x(h) = h(x)$. Prove that $L_x$ is continuous if and only if for all $x \in V$, there is a $\phi(x) \in \H$ such that $h(x) = \ip{h}{\phi(x)}$. Such an $\H$ is called a reproducing kernel Hilbert space (RKHS). 
 \end{exc}
 
 \begin{exc}
-    Let $V$ be the space of quadratic functions $f(x) = ax^2 + bx + c$ on $\R$. Some up with a basis for $V$. Is $V$ finite-dimensional? If so, write the differentiation operator $D(f) = f'(x)$ as a matrix in this basis.
+    Let $V$ be the space of quadratic functions $f(x) = ax^2 + bx + c$ on $\R$. Come up with a basis for $V$. Is $V$ finite-dimensional? If so, write the differentiation operator $D(f) = f'(x)$ as a matrix in $M_{m,n}(\R)$.
 \end{exc}
 
 \begin{exc}
-    Of the following, which are vector spaces?
+    The following exercises will require similar strategies.
     \begin{enumerate}
-        \item The set of normal matrices.
-        \item The set of simultaneously diagonalizable matrices.
-        \item The set of pairwise commuting matrices.
+        \item Let $(V, ||\cdot||)$ be a NLS. Prove that the norm function $||\cdot||: V \rightarrow [0, \infty)$ is continuous.
+        \item Let $V = L^1(\R) = \{f : ||f||_1 = \int_{\R} |f(x)| dx < \infty\}$ with norm $||\cdot||_1$. Prove that the integration functional $L(f) = \int_{\R} f(x) dx$ is continuous. What is its operator norm?
     \end{enumerate}
 \end{exc}
 
-Let $||\cdot||$ be a norm on $\C^n$.
+\begin{exc}
+    Give an example of a bounded linear operator that is not Lipshitz continuous, or claim that none exist.
+\end{exc}
+
+\begin{exc}
+    Give an example of a normed linear space $V$ such that the unit sphere $\mathcal{S} = \{v : ||v|| = 1\}$ is not compact.
+\end{exc}
+
+\begin{exc}
+    Give an example of a linear operator that is not continuous.
+\end{exc}
+
+\begin{exc}
+    Let $\mathcal{C}([0,1])$ be the space of continuous real-valued functions on $[0,1]$.
+    \begin{enumerate}
+        \item Is this a normed linear space with respect to the sup norm $||f||_{\infty} = \sup_{x \in [0,1]} |f(x)|$?
+        \item Let $k: [0,1]^2 \rightarrow \R$ be a continuous real-valued function on the unit square. Define the operator $K: \mathcal{C}([0,1]) \rightarrow \mathcal{C}([0,1])$ to be
+        \begin{align*}
+            K(f) = \int_{0}^1 k(x, y) f(y) dy
+        \end{align*}
+        Show that this operator is linear.
+        \item Is $K$ bounded/continuous? If so, what is $||K||_{\infty, \infty}$ (the operator norm induced by $||\cdot||_{\infty}$ and $||\cdot||_{\infty}$)? {\it Hint: consult the special matrix norms.}
+        \item Repeat the problem, except with $k: L^2([0,1]) \rightarrow L^2([0,1])$ and derive an upper bound for $||K||_{2,2}$ (or the exact value of $||K||_{2,2}$, if you're feeling adventurous!).
+    \end{enumerate}
+\end{exc}
+
+Let $||\cdot||$ be a norm on $V = \C^n$.
 
 \begin{exc}
     Show that if $||\cdot||$ is monotone, then it is absolute.
 \end{exc}
 
 \begin{exc}
-    Show that if $||\cdot||$ is absolute, then $||\cdot||^D$ absolute.
+    Show that if $||\cdot||$ is absolute, then $||\cdot||^D$ absolute. This one's tough, so let's take it step by step.
+    \begin{enumerate}
+        \item First show that for all $x \in V$ and $y^* \in V^*$, there exists an $\hat{x}$ (dependent on $x$ and $y^*$) such that $|\hat{x}| = |x|$ and
+        \begin{align*}
+            y^* \hat{x} = |y|^T |x|
+        \end{align*}
+        where $V^*$ denotes the dual space and $|\cdot|$ is taken element-wise.
+        \item Then show that
+        \begin{align*}
+            ||y||^D = \max_{x \neq 0} \frac{|y^* x|}{||x||} \geq \max_{x \neq 0} \frac{|y^* \hat{x}|}{||\hat{x}||}
+        \end{align*}
+        and consequently that
+        \begin{align*}
+            ||y||^D \geq || \mid y \mid ||^D
+        \end{align*}
+        \item Finally, show that $||y||^D \leq || \mid y \mid ||^D$, completing the proof.
+    \end{enumerate}
 \end{exc}
 
 \begin{exc}
-    Using the previous exercise, show that if $||\cdot||$ is absolute, then it is monotone.
+    Using the previous exercise, show that if $||\cdot||$ is absolute, then it is monotone. Let's break this up as well.
+    \begin{enumerate}
+        \item Show that $||x|| = \max_{||u||^D = 1} |u|^T |x|$. {\it Hint: use the fact that $||x|| = {||x||^D}^D$ and the Hahn-Banach theorem to ensure existence of a maximizer $\hat{u}$.}
+        \item Using the fact that $|x| \leq |y|$ element-wise, and that
+        \begin{align*}
+            ||x|| = \frac{|\hat{u}|^T |x|}{||\hat{u}||},
+        \end{align*}
+        conclude that $||x|| \leq ||y||$.
+    \end{enumerate}
 \end{exc}
+
+The answers to the last three questions are taken (with some changes in notation) from the original paper (\citet{monotone}) connecting absolute and monotone norms, and the diagonal property. If you complete the exercises, you should be fluent in most of the difficult material regarding Chapter 5.
 
 \newpage
 
