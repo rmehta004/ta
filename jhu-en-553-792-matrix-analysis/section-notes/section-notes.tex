@@ -1134,7 +1134,7 @@ There are many other examples in which working in a Hilbert space allows us to u
 
 \paragraph{Acknowledgement} I am grateful to Dr. Nicolas Charon for generously reviewing this week's notes and providing feedback (to make up for my lack of infinite-dimensional experience)!
 
-\section{November 18, 2019}
+\section{November 19, 2019}
 
 We will start with a brief dive into condition number of stability, followed by review of Chapter 5.
 
@@ -1219,13 +1219,8 @@ Like before, this is a high-level enumeration of Chapter 5 topics. It's importan
 
 \subsection*{Chapter 5 exercises}
 
-For the first exercise, you will need this theorem.
-\begin{thm}[Riesz Representation Theorem]
-    Let $\H$ be a Hilbert space over $\K$. Let $L : \H \rightarrow \K$ be a linear functional on $\H$. Then, $L$ is continuous if and only if there exists a $\phi_L \in \H$ such that $L(h) = \ip{h}{\phi_L}_{\H}$ for all $h \in \H$.
-\end{thm}
-We covered this theorem in class, however, we only stated and proved the theorem when $\H$ was {\bf finite-dimensional}. Otherwise, it is exactly the same. The intuition should be clear in finite dimensions.
 \begin{exc}
-    Let $V$ be a vector space over $\R$, and let $\H = \{h : V \rightarrow \R\}$ be a Hilbert space (of functions). Let $L_x$ denote the point evaluation functional, i.e. $L_x(h) = h(x)$. Prove that $L_x$ is continuous if and only if for all $x \in V$, there is a $\phi(x) \in \H$ such that $h(x) = \ip{h}{\phi(x)}$. Such an $\H$ is called a reproducing kernel Hilbert space (RKHS). 
+    Let $V$ be a vector space over $\R$, and let $\H = \{h : V \rightarrow \R\}$ be a Hilbert space (of functions). Let $L_x$ denote the point evaluation functional, i.e. $L_x(h) = h(x)$. Prove that $L_x$ is continuous if for all $x \in V$, there is a $\phi(x) \in \H$ such that $h(x) = \ip{h}{\phi(x)}$. (Actually, the reverse implication is also true, and such an $\H$ is called a reproducing kernel Hilbert space (RKHS)). 
 \end{exc}
 
 \begin{exc}
@@ -1280,31 +1275,71 @@ Let $||\cdot||$ be a norm on $V = \C^n$.
             y^* \hat{x} = |y|^T |x|
         \end{align*}
         where $V^*$ denotes the dual space and $|\cdot|$ is taken element-wise.
+        \begin{proof}
+            Let $\bar{y}_j = |y_j|e^{i \theta_j}$. Then, define $\hat{x}_j = |x_j| e^{-i\theta_j}$. Then, $|\hat{x}_j| = |x_j|$ and 
+            \begin{align*}
+                y^* \hat{x} = \sum_{j=1}^n \bar{y_j} \hat{x}_j = \sum_{j=1}^n |y_j| |x_j| = |y|^T |x|
+            \end{align*}
+        \end{proof}
         \item Then show that
         \begin{align*}
-            ||y||^D = \max_{x \neq 0} \frac{|y^* x|}{||x||} \geq \max_{x \neq 0} \frac{|y^* \hat{x}|}{||\hat{x}||}
+            ||y||^D = \max_{x \neq 0} \frac{|y^* x|}{||x||} \geq \max_{x \neq 0} \frac{|y|^T |x|}{||x||}
         \end{align*}
-        and consequently that
+        \begin{proof}
+            We know that $\hat{x}$ depends on $x$ and $y$, so by restriction of the search space we have
+            \begin{align*}
+                ||y||^D = \max_{x \neq 0} \frac{|y^* x|}{||x||} \geq \max_{x \neq 0} \frac{|y^* \hat{x}|}{||\hat{x}||}
+            \end{align*}
+            By definition of $\hat{x}$ and the absoluteness of $||\cdot||$, we have:
+            \begin{align*}
+                \max_{x \neq 0} \frac{|y^* \hat{x}|}{||\hat{x}||} &= \max_{x \neq 0} \frac{|y|^T |x|}{|| \mid \hat{x} \mid ||}\\
+                &= \max_{x \neq 0} \frac{|y|^T |x|}{|| \mid x \mid ||}\\
+                &= \max_{x \neq 0} \frac{|y|^T |x|}{|| x ||}
+            \end{align*}
+        \end{proof}
+        \item Finally, show that $||y||^D\leq |\max_{x \neq 0} \frac{|y|^T |x|}{||x||}$, completing the proof.
         \begin{align*}
-            ||y||^D \geq || \mid y \mid ||^D
+            |y^* x| = \left|\sum_{j=1}^n \bar{y}_j x_j \right| \leq \sum_{j=1}^n |\bar{y}_j| |x_j| &= |y|^T |x|
         \end{align*}
-        \item Finally, show that $||y||^D \leq || \mid y \mid ||^D$, completing the proof.
+        Meaning that
+        \begin{align*}
+            ||y||^D = \max_{x \neq 0} \frac{|y^* x|}{||x||} \leq \max_{x \neq 0} \frac{ |y|^T |x|}{||x||}
+        \end{align*}
+        Thus, from (b) and (c), 
+        \begin{align*}
+            ||y||^D = max_{x \neq 0} \frac{ |y|^T |x|}{||x||}
+        \end{align*}
+        and depends only on $|y|$, meaning that $||\cdot||^D$ is absolute.
     \end{enumerate}
 \end{exc}
 
 \begin{exc}
-    Using the previous exercise, show that if $||\cdot||$ is absolute, then it is monotone. Let's break this up as well.
-    \begin{enumerate}
-        \item Show that $||x|| = \max_{||u||^D = 1} |u|^T |x|$. {\it Hint: use the fact that $||x|| = {||x||^D}^D$ and the Hahn-Banach theorem to ensure existence of a maximizer $\hat{u}$.}
-        \item Using the fact that $|x| \leq |y|$ element-wise, and that
+    Using the previous exercise, show that if $||\cdot||$ is absolute, then it is monotone. {\it Hint: use the fact that $||x|| = {||x||^D}^D$.}
+    \begin{proof}
+        Use the formula at the end of the previous exercise to say that
         \begin{align*}
-            ||x|| = \frac{|\hat{u}|^T |x|}{||\hat{u}||},
+            ||x|| = {||x||^D}^D = \max_{u \neq 0} \frac{ |x|^T |u|}{||u||^D} = \frac{ |x|^T |\bar{u}|}{||\bar{u}||^D}
         \end{align*}
-        conclude that $||x|| \leq ||y||$.
-    \end{enumerate}
+        for some $\bar{u}$ that achieves the maximum. Now, assume that $|x| \leq |y|$ element-wise. Then
+        \begin{align*}
+            |x|^T |\bar{u}| = \sum_{j=1}^n |x_j| |\bar{u}_j| \leq \sum_{j=1}^n |y_j| |\bar{u}_j| = |y|^T |\bar{u}|
+        \end{align*}
+        Then,
+        \begin{align*}
+            ||x|| = \frac{ |x|^T |\bar{u}|}{||\bar{u}||^D} \leq \frac{ |y|^T |\bar{u}|}{||\bar{u}||^D} \leq \max_{u \neq 0} \frac{ |y|^T |u|}{||u||^D} = ||y||,
+        \end{align*}
+        proving that $||\cdot||$ is monotone.
+    \end{proof}
 \end{exc}
 
 The answers to the last three questions are taken (with some changes in notation) from the original paper (\citet{monotone}) connecting absolute and monotone norms, and the diagonal property. If you complete the exercises, you should be fluent in most of the difficult material regarding Chapter 5.
+
+\section{November 26, 2019}
+
+{\it Solutions to Final Exam 2017 Problems 7 and 8.}\\
+{\it Solution to Exam 3 2018 Problem 5.}
+
+\paragraph{Acknowledgement} Thank you to the students that attended my section this semester. Your feedback has been extremely helpful, and I hope to see you all around in the spring! Good luck on the final!
 
 \newpage
 
