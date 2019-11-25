@@ -2,5 +2,5 @@
 .DS_store
 
 # Ignore homework and exams
-jhu-en-553-792-matrix-analysis/exam1-practice/*
+jhu-en-553-792-matrix-analysis/exam*
 jhu-en-553-792-matrix-analysis/homework/*

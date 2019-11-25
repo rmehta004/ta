@@ -1219,9 +1219,23 @@ Like before, this is a high-level enumeration of Chapter 5 topics. It's importan
 
 \subsection*{Chapter 5 exercises}
 
+Let $V$ be a vector space over $\R$, and let $\H = \{h : V \rightarrow \R\}$ be a Hilbert space (of functions). Let $L_x$ denote the point evaluation functional, i.e. $L_x(h) = h(x)$.
+
 \begin{exc}
-    Let $V$ be a vector space over $\R$, and let $\H = \{h : V \rightarrow \R\}$ be a Hilbert space (of functions). Let $L_x$ denote the point evaluation functional, i.e. $L_x(h) = h(x)$. Prove that $L_x$ is continuous if for all $x \in V$, there is a $\phi(x) \in \H$ such that $h(x) = \ip{h}{\phi(x)}$. (Actually, the reverse implication is also true, and such an $\H$ is called a reproducing kernel Hilbert space (RKHS)). 
+    Prove that if for all $x \in V$, there is a $\phi(x) \in \H$ such that $h(x) = \ip{h}{\phi(x)}$, then $L_x$ is continuous. 
 \end{exc}
+
+The next exercise will require the following theorem.
+\begin{thm}[Riesz Representation Theorem]
+    Let $H$ be a Hilbert space and let $H^*$ be its dual space. Then for every $L \in H^*$, there exists a $\phi_L \in H$ such that for all $h \in H$, $L(h) = \ip{h}{\phi_L}$.
+\end{thm}
+This is almost exactly the version that we have seen in class, except you are only responsible for the statement and proof for finite-dimensional $H$.
+
+\begin{exc}
+    Prove that if $L_x$ is continuous, then for all $x \in V$, there is a $\phi(x) \in \H$ such that $h(x) = \ip{h}{\phi(x)}$. 
+\end{exc}
+
+When both these directions hold, $\H$ is called a reproducing kernel Hilbert space (RKHS). 
 
 \begin{exc}
     Let $V$ be the space of quadratic functions $f(x) = ax^2 + bx + c$ on $\R$. Come up with a basis for $V$. Is $V$ finite-dimensional? If so, write the differentiation operator $D(f) = f'(x)$ as a matrix in $M_{m,n}(\R)$.
@@ -1236,21 +1250,21 @@ Like before, this is a high-level enumeration of Chapter 5 topics. It's importan
 \end{exc}
 
 \begin{exc}
-    Give an example of a bounded linear operator that is not Lipshitz continuous, or claim that none exist.
+    Give an example of a bounded linear operator that is not Lipshitz continuous, or claim that none exist and justify it.
 \end{exc}
 
 \begin{exc}
-    Give an example of a normed linear space $V$ such that the unit sphere $\mathcal{S} = \{v : ||v|| = 1\}$ is not compact.
+    Give an example of a normed linear space $V$ such that the unit sphere $\mathcal{S} = \{v : ||v|| = 1\}$ is not compact, and prove so without invoking the theorem from class.
 \end{exc}
 
 \begin{exc}
-    Give an example of a linear operator that is not continuous.
+    Give an example of a linear operator that is not continuous, and justify it.
 \end{exc}
 
 \begin{exc}
     Let $\mathcal{C}([0,1])$ be the space of continuous real-valued functions on $[0,1]$.
     \begin{enumerate}
-        \item Is this a normed linear space with respect to the sup norm $||f||_{\infty} = \sup_{x \in [0,1]} |f(x)|$?
+        \item Is this a normed linear space with respect to the sup norm $||f||_{\infty} = \sup_{x \in [0,1]} |f(x)|$ (as in, is the norm a well-defined mapping to $\R$ for every element of this space?
         \item Let $k: [0,1]^2 \rightarrow \R$ be a continuous real-valued function on the unit square. Define the operator $K: \mathcal{C}([0,1]) \rightarrow \mathcal{C}([0,1])$ to be
         \begin{align*}
             K(f) = \int_{0}^1 k(x, y) f(y) dy
@@ -1307,7 +1321,7 @@ Let $||\cdot||$ be a norm on $V = \C^n$.
         \end{align*}
         Thus, from (b) and (c), 
         \begin{align*}
-            ||y||^D = max_{x \neq 0} \frac{ |y|^T |x|}{||x||}
+            ||y||^D = \max_{x \neq 0} \frac{ |y|^T |x|}{||x||}
         \end{align*}
         and depends only on $|y|$, meaning that $||\cdot||^D$ is absolute.
     \end{enumerate}
@@ -1318,21 +1332,21 @@ Let $||\cdot||$ be a norm on $V = \C^n$.
     \begin{proof}
         Use the formula at the end of the previous exercise to say that
         \begin{align*}
-            ||x|| = {||x||^D}^D = \max_{u \neq 0} \frac{ |x|^T |u|}{||u||^D} = \frac{ |x|^T |\bar{u}|}{||\bar{u}||^D}
+            ||x|| = {||x||^D}^D = \max_{u \neq 0} \frac{ |x|^T |u|}{||u||^D} = \frac{ |x|^T |\hat{u}|}{||\hat{u}||^D}
         \end{align*}
-        for some $\bar{u}$ that achieves the maximum. Now, assume that $|x| \leq |y|$ element-wise. Then
+        for some $\hat{u}$ that achieves the maximum. Now, assume that $|x| \leq |y|$ element-wise. Then
         \begin{align*}
-            |x|^T |\bar{u}| = \sum_{j=1}^n |x_j| |\bar{u}_j| \leq \sum_{j=1}^n |y_j| |\bar{u}_j| = |y|^T |\bar{u}|
+            |x|^T |\hat{u}| = \sum_{j=1}^n |x_j| |\hat{u}_j| \leq \sum_{j=1}^n |y_j| |\hat{u}_j| = |y|^T |\hat{u}|
         \end{align*}
         Then,
         \begin{align*}
-            ||x|| = \frac{ |x|^T |\bar{u}|}{||\bar{u}||^D} \leq \frac{ |y|^T |\bar{u}|}{||\bar{u}||^D} \leq \max_{u \neq 0} \frac{ |y|^T |u|}{||u||^D} = ||y||,
+            ||x|| = \frac{ |x|^T |\hat{u}|}{||\hat{u}||^D} \leq \frac{ |y|^T |\hat{u}|}{||\hat{u}||^D} \leq \max_{u \neq 0} \frac{ |y|^T |u|}{||u||^D} = ||y||,
         \end{align*}
         proving that $||\cdot||$ is monotone.
     \end{proof}
 \end{exc}
 
-The answers to the last three questions are taken (with some changes in notation) from the original paper (\citet{monotone}) connecting absolute and monotone norms, and the diagonal property. If you complete the exercises, you should be fluent in most of the difficult material regarding Chapter 5.
+The answers to the last three questions are taken (with some changes in notation) from the original paper (\citet{monotone}) connecting absolute and monotone norms, and the diagonal property. Try to prove the diagonal property results yourself for additional practice. If you complete these exercises, you should be fluent in most of the difficult material regarding Chapter 5, especially that which is not really emphasized in the homework but could still appear on the exam (see ).
 
 \section{November 26, 2019}
 
