@@ -12,3 +12,8 @@
 **Website:** http://neurodatadesign.io/   
 **Office hours and location:** Any scheduled time and day between 10:00AM - 6:00PM in Clark 317.  
 
+
+## Intersession 2020 - EN.553.109: Mathematical Thinking and Proof-Writing for Engineers
+ 
+**Office hours and location:** Any scheduled time and day between 10:00AM - 6:00PM in Clark 317. 
+
