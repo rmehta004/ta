@@ -280,7 +280,189 @@ While none of these concepts are particularly interesting in their own right, th
 
 \section{January 7, 2020}
 
+Beyond direct proof, there are two more proof strategies that use a slightly different approach. The statement we wish to show typically look like $A \implies B$, or ``If condition $A$ is true, then condition $B$ is true". Another way one can show this is by {\it assuming} that $A$ is true and $B$ is false, and showing that this contradicts some previously held belief. You can read more about this in Scheinerman Chapter 4, Section 20.
+\begin{exm}
+    Prove that no integer is both even and odd.
+\end{exm}
+\begin{proof}
+    Assume for the sake of contradiction (FSOC) that $x \in \Z$ is both even and odd. In other words, $\exists a, b \in \Z$ such that $x = 2a$ and $x = 2b+1$. Then,
+    \begin{align*}
+        2a &= 2b+1\\
+        \implies 2(a-b) &= 1\\
+        \implies a-b &= \frac{1}{2}
+    \end{align*}
+    But this is absurd, as $a-b$ must be an integer. Therefore, our original assumption is false, and $x$ cannot be both even and odd.
+\end{proof}
+\begin{exc}
+    Prove by contradiction: If the sum of two primes is prime, then one of the primes must be 2.
+\end{exc}
+\begin{exc}
+    Let a be a number with a > 1. Prove that $\sqrt{a}$ is strictly between 1 and a.
+\end{exc}
+
+On the other hand, statements proved with the principle of induction usually look like "Prove that $l(n) \sim r(n)$ for all $n \geq 1$, where $l(n)$ and $r(n)$ are expressions of $n$, and the ``$\sim$" symbol relates them in some way.
+\begin{exm}
+    Prove that $1 + 2 + ... + n = \frac{n(n+1)}{2}$.
+\end{exm}
+In this scenario, we show two things.
+\begin{enumerate}
+    \item $l(1) \sim r(1)$
+    \item If $l(k) \sim r(k)$, then it must be true that $l(k+1) \sim r(k+1)$.
+\end{enumerate}
+This makes it so that $l(1) \sim r(1) \implies l(2) \sim r(2) \implies ...$, showing the result for all $n$.
+\begin{proof}
+    Clearly, $1 = \frac{1(1+1)}{2}$. Say $1 + 2 + ... + k = \frac{k(k+1)}{2}$ for some $k \geq 1$. Then,
+    \begin{align*}
+        1 + 2 + ... + k + (k+1) &= (1 + 2 + ... + k) + (k+1)\\
+        &= \frac{k(k+1)}{2} + (k+1)\\
+        &= \frac{k(k+1)}{2} + \frac{2(k+1)}{2}\\
+        &= \frac{k(k+1) + 2(k+2)}{2}\\
+        &= \frac{(k+2)(k+1)}{2}\\
+        &= \frac{(k+1)(k+1+1)}{2}
+    \end{align*}
+\end{proof}
+You can read more about this strategy in Scheinerman Chapter 4 Section 22.
+
+\begin{exc}
+    Prove that $1^2 + 2^2 + ... +n^2 = \frac{(2n+1)(n+1)n}{6}$ for $n \geq 1$.
+\end{exc}
+\begin{exc}
+    Prove that $1\cdot 1! + 2\cdot 2! + ... + n \cdot n! = (n+1)! - 1$ for $n \geq 1$.
+\end{exc}
+\begin{exc}
+    Prove that $10^0 + 10^1 + ... +10^n < 10^{n+1}$ for $n \geq 0$.
+\end{exc}
+
 \section{January 8, 2020}
+
+So far, we have seen three main proof strategies and steps. 
+\begin{itemize}
+    \item Direct Proof: $A \implies B$ (including contrapositive $\neg B \implies \neg A$).
+    \begin{enumerate}
+        \item Unravel definitions of conclusion or want-to-show (W.T.S.)
+        \item Unravel definitions of assumptions.
+        \item "Aha!" moment, where algebraic manipulations bridge the gap.
+    \end{enumerate}
+    \item Proof by Contradiction: $A$ and $\neg B \implies $ absurdity.
+    \begin{enumerate}
+        \item Unravel definitions of assumptions.
+        \item ``Assume FSOC..." Unravel definitions of negated conclusion
+        \item Contradict some aspect of the original problem set up.
+    \end{enumerate}
+    \item Proof by Induction: $l(n) \sim r(n)$ for $n \in \N$
+    \begin{enumerate}
+        \item Show that $l(1) \sim r(1)$ (or some equivalent base case).
+        \item Show that if $l(k) \sim r(k)$, then it must be true that $l(k+1) \sim r(k+1)$. This usually involves...
+        \begin{enumerate}
+            \item Writing down $l(k+1)$.
+            \item Turning it into an expression involving $l(k)$.
+            \item Replacing $l(k)$ be $r(k)$ (in a way that makes sense with whatever ``$\sim$" is).
+            \item Turning the resulting expression into $r(k+1)$.
+        \end{enumerate}
+    \end{enumerate}
+\end{itemize}
+
+Believe it or not, all of the logic that you will probably see in your mathematical careers is listed above. The only thing that becomes more complicated as you get to more advanced math is the definitions, which you will memorize diligently. Otherwise, direct, contradiction, and induction proof really cover everything. So we will drill them today so that you are completely solid on them, and then we will move on and see complex definitions and applications of these ideas. I'll first introduce sum and product notation if you haven't seen it before.
+
+\subsection{Sums and Products}
+
+A {\it list} is an ordered collection of elements, as opposed to a {\it set}, which is an unordered, collection of distinct elements. We typically write this as $(a_i)_{i=1}^n = (a_1, a_2,..., a_n)$. The subscript $i$ for $i = 1, 2,..., n$ indexes the $i$-th element of this list. Assuming that we are dealing with a list of real numbers, say, the sum of the list is written:
+\begin{align*}
+    S = \sum_{i=1}^n a_i = a_1 + a_2 + ... + a_n
+\end{align*}
+$i$ is called the index variable, and any variable can be used for this purpose; $i$, $j$, and $k$ are common ones (similar to a ``dummy" variable in integration). If we multiply each element by a constant $k$, the sum also increases by factor $k$. Using this information, we can pull constants (values that do not have the index variable as a subscript) out of the sum. If a list $(c_i)$ can be decomposed into a sum of two lists $(a_i)$ and $(b_i)$, we can sum them individually.
+\begin{align*}
+    \sum_{i=1}^n ka_i = ka_1 +ka_2 + ... + ka_n &= k(a_1 + a_2 + ... + a_n) = k\sum_{i=1}^n a_i\\
+    \sum_{i=1}^n c_i = \sum_{i=1}^n (a_i + b_i) &= \sum_{i=1}^n a_i + \sum_{i=1}^n b_i
+\end{align*}
+The sum of an empty list of numbers has size 0.\\
+
+Similar to sums, we may want to multiply all elements of a list into one product. We write this as:
+\begin{align*}
+    P = \prod_{i=1} a_i = a_1 \cdot a_2 \cdot ... \cdot a_n
+\end{align*}
+When pulling out a constant $k$, we must raise it to the $n$-th power, because it scales the total product once {\it per element}. Similarly, if a list $\{c_i\}$ is an element-wise product of lists $\{a_i\}$ and $\{b_i\}$, then we can take the products individually and multiply them.
+\begin{align*}
+    \prod_{i=1}^n ka_i = (ka_1)\cdot(ka_2)\cdot ... \cdot (ka_n) &= k^n \cdot (a_1 \cdot a_2 \cdot ... \cdot a_n) = k^n \prod_{i=1}^n a_i\\
+    \prod_{i=1}^n c_i = \prod_{i=1}^n (a_i b_i) &= \left(\prod_{i=1}^n a_i \right) \cdot \left(\prod_{i=1}^n b_i\right) 
+\end{align*}
+The product of an empty list has value 1.
+
+\subsection{Direct Proof and Logic Problems}
+
+\begin{exc}
+    Let $a$ and $b$ be positive integers. Explain why the notation $a \mid b+1$ can be interpreted only as $a \mid (b+1)$ and not as $(a \mid b) + 1$.
+\end{exc}
+\begin{exc}
+    Suppose $a$ is a perfect square and $a \geq 9$. Prove that $a-1$ is composite.
+\end{exc}
+
+\subsection{Proof by Contradiction Problems}
+
+\begin{exc}
+    Prove that $\sqrt{2}$ is irrational, i.e. there are no $p, q \in \Z$ such that $\sqrt{2} = \frac{p}{q}$.
+\end{exc}
+\begin{exc}
+    Prove that there exist no integers $a, b$ such that $18a + 6b = 1$.
+\end{exc}
+\begin{exc}
+    Suppose that $a, b \in \Z$. Prove that if $4 \mid a^2 + b^2$, then $a$ and $b$ cannot both be odd.
+\end{exc}
+\begin{exc}
+    Prove there are infinitely many prime numbers.
+\end{exc}
+\begin{exc}
+    Let $a \in \Z$. Prove that if $a^2$ is even, then $a$ is even.
+\end{exc}
+
+\subsection{Proof by Induction Problems}
+
+\begin{exc}
+    Prove that a convex $n$-gon has $\frac{n(n-3)}{2}$ diagonals.
+\end{exc}
+\begin{exc}
+    Prove that $\sum_{k=1}^n (2k-1) = n^2$.
+\end{exc}
+\begin{exc}
+    Suppose $a \neq 1$. Prove that $\sum_{j=0}^n a_j = \frac{a^{n+1} - 1}{a-1}$.
+\end{exc}
+\begin{exc}
+    Prove that $n! > 2^n$ for all $n \geq 4$.
+\end{exc}
+\begin{exc}
+    Prove that $\prod_{j=1}^n \frac{j^2}{j+1} = \frac{n!}{n+1}$.
+\end{exc}
+\begin{exc}
+    Prove that $\sum_{k=1}^n \frac{1}{k^2} < 2 - \frac{1}{n}$ for $n \geq 1$.
+\end{exc}
+\begin{exc}
+    Prove $\sum_{r=1}^n r(r+1) = \frac{1}{3} n(n+1)(n+2)$
+\end{exc}
+\begin{exc}
+    Prove $\sum_{r=1}^n r(r+1)(r+1)...(r+p-1) = \frac{1}{1+p} n(n+1)(n+2)...(n+p)$. We can also write this as
+    \begin{align*}
+        \sum_{r=1}^n \prod_{l=1}^p r(r+l-1) = \frac{1}{1+p} \prod_{l=0}^p (n+l)
+    \end{align*}
+\end{exc}
+\begin{exc}
+    Prove that $4^n - 1$ is divisible by 3 for all $n \geq 1$.
+\end{exc}
+\begin{exc}
+    Prove that $5^{2n+1} + 2^{2n+1}$ is divisible by 7 for all $n \geq 0$.
+\end{exc}
+\begin{exc}
+    Let $A_1, ..., A_n$ be sets (where $n \geq 2)$. Suppose that for any two sets $i$ and $j$, either $A_i \subseteq A_j$ or $A_j \subseteq A_i$. Prove by induction that one of the $n$ sets is a subset of all of them.
+\end{exc}
+\begin{exc}
+    A group of people stand in line to purchase movie tickets. The first person in line is a woman and the last person in line is a man. Use proof by induction to show that somewhere in the line a woman is directly in front of a man.
+\end{exc}
+\begin{exc}
+    Proposition 22.10 from Scheinerman.
+\end{exc}
+\begin{exc}
+    Problem 22.12 from Scheinerman (Tower of Hanoi).
+\end{exc}
+
 
 \section{January 9, 2020}
 
