@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+
+% Document settings, taken from Introduction to Algorithms (Dinitz).
+\usepackage{epsfig}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{enumitem}                     
+\usepackage{titlesec}
+\usepackage{amsthm}
+\usepackage{natbib}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\titleformat*{\section}{\bfseries}
+\titleformat*{\subsection}{\bfseries}
+\titleformat*{\subsubsection}{\bfseries}
+\titleformat*{\paragraph}{\bfseries}
+\titleformat*{\subparagraph}{\bfseries}
+
+\newcommand{\R}{\ensuremath{\mathbb R}}
+\newcommand{\C}{\ensuremath{\mathbb C}}
+\newcommand{\N}{\ensuremath{\mathbb N}}
+\newcommand{\F}{\ensuremath{\mathbb F}}
+\newcommand{\K}{\ensuremath{\mathbb K}}
+\newcommand{\Z}{\ensuremath{\mathbb Z}}
+\newcommand{\B}{\ensuremath{\mathcal B}}
+\renewcommand{\H}{\ensuremath{\mathcal H}}
+\newcommand{\EV}{\ensuremath{\mathbb E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\e}{\epsilon}
+\newcommand{\E}{\exists}
+\newcommand{\sse}{\subseteq}
+\newcommand{\union}{\cup}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ip}[2]{\left\langle #1, #2\right\rangle}
+\DeclareMathOperator*{\argmax}{arg\,max\ }
+\DeclareMathOperator*{\argmin}{arg\,min\ }
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{coro}{Corollary}[section]
+\newtheorem{obs}{Observation}[section]
+
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+
+\theoremstyle{remark}
+\newtheorem{exm}{Example}[section]
+\newtheorem{exc}{Exercise}[section]
+\newtheorem{rem}{Remark}[section]
+\newtheorem{question}{Question}
+\newtheorem{answer}{Answer}
+
+\setenumerate[0]{label=(\alph*)}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% Document begins here %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+% EDIT THE FOLLOWING PARAMETERS FOR EACH ASSIGNMENT.
+
+% NAME and COURSE TITLE + SECTION NUMBER
+\noindent {\large {\bf Mathematical Thinking and Proof-Writing for Engineers}} \hfill {\bf Intersession 2020}
+
+% PROFESSOR and HOMEWORK NUMBER
+\noindent {{\bf Instructor:} Ronak Mehta} \hfill 
+{Homework 1}
+
+\noindent \rule[0.1in]{\textwidth}{0.4pt}
+
+The following homework contains proof fundamentals such as direct argument, contradiction, and induction, as well as limits and sequences. Feel free to work with each other. Please write your final submission on paper without lines. It is due on {\bf Friday, January 17}.
+
+% CONTENT
+
+\section*{Problem 1}
+
+An $n$-gon is a polygon with $n$ sides. A {\bf diagonal} of a polygon is a line segment that can be drawn between two vertices that are not adjacent. A polygon is {\bf convex} provided all of its angles are less than 180 degrees. Prove that a convex $n$-gon has $\frac{n(n-3)}{2}$ diagonals, for $n \geq 3$.\\
+
+For Problem 2 and 3, we need to define the {\bf supremum}, denoted $\sup S$, of set $S \subseteq \R$ as the least upper bound of the set. Precisely, $u$ is an {\bf upper bound} for $S$ if for all $x \in S$, $u \geq x$. A number $s = \sup S$ if it is an upper bound of $S$, and for any other upper bound $u$ of $S$, $s \leq u$.
+
+Similarly, the {\bf infimum}, denoted $\inf S$, is the greatest lower bound of $S$. Neither of these need to exist if the set is unbounded. For example, $\sup \Z$ can be considered $\infty$, as there is no upper bound.
+
+\section*{Problem 2}
+
+\begin{enumerate}
+    \item Give an example of a set where the supremum and infimum are {\bf not} members of the set.
+    \item Let $S$ be a set, and $s = \sup S$. Prove that for any $\epsilon > 0$, there exists $x \in S$ such that
+    \begin{align*}
+        s - \epsilon \leq x \leq s
+    \end{align*}
+    What is the analogous condition for the infimum of $S$?
+\end{enumerate}
+
+\section*{Problem 3}
+
+Let $(x_n)$ be a bounded sequence in $\R$. Prove that if $(x_n)$ is monotone, then it converges, in two parts.
+\begin{enumerate}
+    \item Let $S = \{x_n : n = 1, 2, ...\}$ be the set that contains all the elements of $(x_n)$. Prove that if $(x_n)$ is monotone non-decreasing (i.e. $x_1 \leq x_2 \leq x_3 ...$), then $x_n \rightarrow \sup S$. Similarly, show that if $(x_n)$ is monotone non-increasing, then $x_n \rightarrow \inf S$ (use Problem 2).
+    \item Use the previous part to prove the original theorem.
+\end{enumerate}
+
+\section*{Problem 4 (optional)}
+
+Prove that the closed interval $[0,1]$ is uncountable.
+
+
+% BIBLIOGRAPHY AND ACKNOWLEDGEMENTS
+% \paragraph{Acknowledgement} Thank you to the students that attended my section this semester. Your feedback has been extremely helpful, and I hope to see you all around in the spring! Good luck on the final!
+
+% \newpage
+
+% \vspace{5mm}
+% \bibliography{refs}
+% %\bibliographystyle{IEEEtran}
+% \bibliographystyle{plainnat}
+
+% \newpage
+
+\end{document}
+
