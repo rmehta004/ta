@@ -1,0 +1,131 @@
+\documentclass[11pt]{article}
+
+% Document settings, taken from Introduction to Algorithms (Dinitz).
+\usepackage{epsfig}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{enumitem}                     
+\usepackage{titlesec}
+\usepackage{amsthm}
+\usepackage{natbib}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\titleformat*{\section}{\bfseries}
+\titleformat*{\subsection}{\bfseries}
+\titleformat*{\subsubsection}{\bfseries}
+\titleformat*{\paragraph}{\bfseries}
+\titleformat*{\subparagraph}{\bfseries}
+
+\newcommand{\R}{\ensuremath{\mathbb R}}
+\newcommand{\C}{\ensuremath{\mathbb C}}
+\newcommand{\N}{\ensuremath{\mathbb N}}
+\newcommand{\F}{\ensuremath{\mathbb F}}
+\newcommand{\K}{\ensuremath{\mathbb K}}
+\newcommand{\Z}{\ensuremath{\mathbb Z}}
+\newcommand{\B}{\ensuremath{\mathcal B}}
+\renewcommand{\H}{\ensuremath{\mathcal H}}
+\newcommand{\EV}{\ensuremath{\mathbb E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\e}{\epsilon}
+\newcommand{\E}{\exists}
+\newcommand{\sse}{\subseteq}
+\newcommand{\union}{\cup}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ip}[2]{\left\langle #1, #2\right\rangle}
+\DeclareMathOperator*{\argmax}{arg\,max\ }
+\DeclareMathOperator*{\argmin}{arg\,min\ }
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{coro}{Corollary}[section]
+\newtheorem{obs}{Observation}[section]
+
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+
+\theoremstyle{remark}
+\newtheorem{exm}{Example}[section]
+\newtheorem{exc}{Exercise}[section]
+\newtheorem{rem}{Remark}[section]
+\newtheorem{question}{Question}
+\newtheorem{answer}{Answer}
+
+\setenumerate[0]{label=(\alph*)}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% Document begins here %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+% EDIT THE FOLLOWING PARAMETERS FOR EACH ASSIGNMENT.
+
+% NAME and COURSE TITLE + SECTION NUMBER
+\noindent {\large {\bf Mathematical Thinking and Proof-Writing for Engineers}} \hfill {\bf Intersession 2020}
+
+% PROFESSOR and HOMEWORK NUMBER
+\noindent {{\bf Instructor:} Ronak Mehta} \hfill 
+{Homework 2}
+
+\noindent \rule[0.1in]{\textwidth}{0.4pt}
+
+The following homework contains topology concepts such as open, closed, and compact sets, as well as continuity. Feel free to work with each other. Please write your final submission on paper without lines. It is due during class {\bf Thursday, January 23}, but is preferred by email beforehand.
+
+% CONTENT
+
+\section*{Problem 1}
+
+Understand every step of every definition and proof shown in the course. If not, come to the final class with questions about anything you do not understand, or discuss with Ronak during normal lab hours. If everything is clear, then state on the homework ``I understand everything from class perfectly."
+
+\section*{Problem 2}
+
+Come up with one aspect of the course that was successful, and one aspect that could use improvement. Did the course mostly agree with or differ from your expectations?
+
+\section*{Problem 3}
+
+Prove that the intersection of two closed sets is closed.
+
+\section*{Problem 4}
+
+If $A$ is a set and $f$ is a function, let $f(A) = \{f(x) : x \in A\}$, i.e. all outputs generated from inputs in $A$. Provide examples of the following.
+Provide examples of the following. 
+\begin{enumerate}
+    \item Continuous $f$ and open $A$ such that $f(A)$ is not open.
+    \item Continuous $f$ and closed $A$ such that $f(A)$ is not closed.
+    \item Continuous $f$ and compact $f(A)$ such that $A$ is not compact.
+\end{enumerate}
+The function and the sets need not be the same between examples, and you do not need to prove that the function is continuous or that the sets are open, closed, or compact.
+
+
+% BIBLIOGRAPHY AND ACKNOWLEDGEMENTS
+% \paragraph{Acknowledgement} Thank you to the students that attended my section this semester. Your feedback has been extremely helpful, and I hope to see you all around in the spring! Good luck on the final!
+
+% \newpage
+
+% \vspace{5mm}
+% \bibliography{refs}
+% %\bibliographystyle{IEEEtran}
+% \bibliographystyle{plainnat}
+
+% \newpage
+
+\end{document}
+
