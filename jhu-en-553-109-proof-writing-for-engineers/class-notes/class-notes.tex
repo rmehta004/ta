@@ -34,6 +34,9 @@
 \newcommand{\K}{\ensuremath{\mathbb K}}
 \newcommand{\Z}{\ensuremath{\mathbb Z}}
 \newcommand{\B}{\ensuremath{\mathcal B}}
+\newcommand{\X}{\ensuremath{\mathcal X}}
+\newcommand{\Y}{\ensuremath{\mathcal Y}}
+\renewcommand{\S}{\ensuremath{\mathcal S}}
 \renewcommand{\H}{\ensuremath{\mathcal H}}
 \newcommand{\EV}{\ensuremath{\mathbb E}}
 \newcommand{\Var}{\text{Var}}
@@ -91,7 +94,7 @@
 
 \section{January 6, 2020}
 
-\paragraph{Prereading} \href{https://drive.google.com/drive/folders/1T_M-dvYE4leOSmpKt2eGYOvPRch_SDpK?usp=sharing}{Pages 1 - 11} of {\it Mathematics: A Discrete Introduction} by Edward Scheinerman.
+\paragraph{Prereading} \href{https://drive.google.com/drive/folders/1T_M-dvYE4leOSmpKt2eGYOvPRch_SDpK?usp=sharing}{Pages 1 - 11} of {\it Mathematics: A Discrete Introduction} by Edward Scheinerman. Also look at the ``Set Notation" PowerPoint in the repo.
 
 \subsection{Introduction}
 Welcome, and thanks for your interest! While mathematical theory is usually not the poster boy of engaging and topical intersession courses, I think we can change some minds with this particular class. The subject is fascinating, but notoriously difficult to teach. There are many balancing acts when it comes to mathematical education; those of memorization versus exploration, theory versus application, and lectures versus self-guided learning constitute most of the battle. In any case, I can make a strong argument for the utility of this course in your future endeavors, so I'll attempt to present it in a way that is best for you. To this end, I ask of you all a healthy amount of honest and constructive feedback throughout the course.
@@ -885,6 +888,304 @@ This can be thought of as all sequences being ``trapped" in $A$, unable to escap
     We prove this by contrapositive. Assume set $A$ is not closed. Then, there must exist an AP $y$ of $A$ that lies outside of $A$. By \ref{thm:ap}, we know that there exists a sequence $(x_n)$ with each element in $A$ that converges to $y$. Because $(x_n) \rightarrow y$, any subsequence $(x_{n_k}) \rightarrow y \notin A$. Because we found a sequence in $A$ that does not have a subsequence converging in $A$, $A$ is not compact.
 \end{proof}
 
+\section{January 21, 2020}
+
+While we saw a definition of compactness last time, there is an alternate definition that we can also get some mileage out of.
+\begin{defi}[Open Cover]
+    A collection of sets $\mathcal{S}$ is called an open cover of set $A$ if for all $U \in \mathcal{S}$, $U$ is open, and
+    \begin{align*}
+        A \sse \bigcup_{U \in \S} U
+    \end{align*}
+\end{defi}
+This is a collection (or set) or sets such that when we take their union, we get a larger set that contains all of $A$. Note that I did not write something like $\bigcup_{n=1}^\infty U_n$, because there is no need for the sets to be indexed by the natural numbers. In other words, there is no need for the group of sets to be countable. This will yield the following definition.
+\begin{defi}[Compact Set]
+    A set $A \sse \R$ is compact if every open cover of $A$ has a finite subcover.
+\end{defi}
+By subcover, we mean a subset of $\S$ that is still an open cover of $A$. Note that the definition is not that a finite open cover exists, but rather given any (possibly infinite) open cover, you can extract a finite subcover from it. Figure \ref{fig:subcover} visualizes this.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/finite_subcover.png}
+    \caption{The brown ellipse represents a set, and the blue ellipses represent an open cover. Note that compactness does not require the existence of an open cover, but for every given (even infinite) open cover, one can extract a finite subcover.}
+    \label{fig:subcover}
+\end{figure}
+Going back to Heine-Borel, we know that every closed and bounded set in $\R$ is compact, including the closed intervals and singletons. Let us go through a negative example.
+\begin{exm}
+    Prove that $A = (0, 1)$ is not compact.
+\end{exm}
+\begin{proof}
+    To negate the definition that every open cover has a finite subcover, we must construct an open cover that does not have a finite subcover. Consider the sets $U_n = (\frac{1}{2^n}, \frac{3}{2^n})$, and consider the collection $\S = \{U_n: n = 1, 2, ...\}$. This is clearly an open cover of $A$ (draw a picture!). How can we show that there is no finite subcover? Because this collection is infinite, we must remove some open sets in order to have a finite subcover. However, any set that we remove reveals an uncovered portion of $A$. Indeed, when removing $U_1$, we lose coverage of $[\frac{3}{4}, 1)$, and when removing $U_n$ for $n > 1$, we lose coverage of $[\frac{3}{2^{n+1}}, \frac{1}{2^{n-1}}]$. Thus, no finite subcover exists, and $A$ is not compact. 
+\end{proof}
+Why will the same argument not hold for $[0, 1]$? For one, this collection does not cover $\{0\}$. If we include a small ball $(-\e, \e)$ around 0 in the open cover, then we can remove an infinite amount of the $U_n$ from within that ball. Precisely, once the end point $\frac{3}{2^n} < \e$, then we do not need $U_n$. We already know that compact sets are closed. Let's use this to show that they are bounded.
+
+\begin{exm}
+    Prove that a compact set is bounded.
+\end{exm}
+\begin{proof}
+    Let $A$ be a compact set. Consider the collection $\S = \{(-r, r) : r > 0\}$. $\bigcup _{r > 0} (-r, r) = \R$, so this is definitely an open cover of $A$. By compactness, there exists a finite subcover $\S_f = \{(-r_1, r_1), ..., (-r_N, r_N)\}$. Let $r = \max\{r_1, ..., r_N\}$. Then, $A \sse (-r ,r)$, and this thus bounded.
+\end{proof}
+In order to work towards the converse of Heine-Borel (showing that closed and bounded sets in $\R$ are compact), we will need one more result.
+\begin{thm}
+    Let $B$ be compact and $A$ be a closed subset of $B$. Prove that $A$ is also compact.
+    \label{thm:subset}
+\end{thm}
+\begin{proof}
+    Let $\S$ be an open cover of $A$. We want to show that it has a finite subcover. Let $U = A^c$, i.e. all of $\R$ excluding $A$. Becuase $A$ is closed, $U$ is open. Therefore, $\S \cup U$ is an open cover of all of $\R$, and thus an open cover of $B$. Because $B$ is compact, there is a finite subcover $\S_f$ of $\S \cup U$ that covers all of $B$. This finite $\S_f$ must then also cover $A$, as $A \sse B$. $U$ was not in the original $\S$, and might be in $\S_f$. However, because $U$ contains no points of $A$, we can discard $U$ from $\S_f$ and we have thus extracted from $\S$ a finite subcover of $A$.
+\end{proof}
+While we have taken this for granted, we will also formally show the following.
+\begin{exm}
+    Prove than a closed interval $[a, b]$ is compact. 
+    \label{thm:interval}
+\end{exm}
+\begin{proof}
+    In this case, we will use the sequential definition. Let $(x_n)$ be a sequence in $[a, b]$. By \ref{thm:mono}, we know that this $(x_n)$ has a monotone subsequence. This monotone subsequence is bound below by $a$ and above by $b$, so we know that by Homework 1 Problem 3, the subsequence converges to some limit $x$. $a \leq x \leq b$, and because $a, b \in [a, b]$, we are assured that $x \in [a, b]$. 
+\end{proof}
+We are now in a place to show the following.
+\begin{exm}
+    Prove that if a set in $\R$ is closed and bounded, then it is compact.
+\end{exm}
+\begin{proof}
+    Let $A sse \R$ be bounded, i.e. there is some $M$ such that for all $x \in A$, $-M \leq |x| \leq M$. Then, $A \sse [-M, M]$ (\ref{thm:interval}). $A$ is also closed, in particular a closed subset of the compact set $[-M, M]$. Then, by \ref{thm:subset}, $A$ is compact.
+\end{proof}
+
+\subsection*{Functions}
+
+\begin{itemize}
+    \item A function $f$ takes elements of set $A$ and maps/corresponds them to elements of set $B$. We write this as $f: A \rightarrow B$.
+    \item If $x \in A$ corresponds to $y \in B$, we write $y = f(x)$. For example, take a function $f: \R \rightarrow \R$ defined by $f(x) = x^2$; it maps $x \in \R$ to $y = x^2 \in \R$.
+    \item $A$ is called the {\it domain} of $f$ and $B$ is called the {\it codomain} of $f$.
+    \item The {\it image} or {\it range} of $f$ is the set of all points that can be achieved by plugging in values into $f$, or all possible outputs of $f$. That is, $\text{image}(f) = \{f(x) : x \in \text{domain}(f)\}$.
+    \item $\text{image}(f) \subseteq \text{codomain}(f)$. The reason that they are not necessarily equal is that all points in the codomain need not be achieved by plugging in values into $f$. For $f(x) = x^2$, the codomain is $\R$, but only the nonnegative numbers in $\R$ are possible outputs of $f$.
+    \item Functions can be of multiple variables, such as $z = f(x,y) = 2x + y$. Here, we usually call $z$ the {\it output} or {\it value} of the function, while $x$ and $y$ are called {\it inputs} or {\it arguments} to the function.
+    \item A function is {\it one-to-one} if different points in the domain map to different points in the codomain. That is, $x \neq y \implies f(x) \neq f(y)$, or that $f$ preserves distinctness.
+    \item Finally, $f$ is {\it onto} if $\text{image}(f) = \text{codomain}(f)$, or that for every $y \in \text{codomain}(f)$, there exists an $x \in \text{domain}(f)$ such that $y = f(x)$.
+\end{itemize}
+\newpage
+Understand the following examples:
+\begin{enumerate}
+    \item $f: \R \rightarrow \R$ defined by $f(x) = x^2$ is not onto. If we define the function instead as $f: \R \rightarrow \R_{\geq 0}$ where $\R_{\geq 0} = [0, \infty)$, then $f$ is onto. More generally, a function can always be made onto by restricting the codomain to just the range/image.
+    \item $f: \R \rightarrow \R$ is one-to-one if it passes the horizontal line test, i.e. no horizontal line crosses the plot of the function more than once.
+    \item For any constant $R$, take $f: [-R,R] \rightarrow \R$ defined by $f(x) = \sqrt{R^2-x^2}$. $\text{image}(f) = [0,R]$. Why is $\text{domain}(f)$ restricted to $[-R,R]$?
+    \item If you have taken linear algebra: take $f: \R^n \rightarrow \R^m$ defined by $f(x) = Ax$ for some $m \times n$ matrix $A$. Why is $\text{image}(f) = \text{span}\{\text{columns of $A$}\}$?
+\end{enumerate}
+
+You have likely seen, at least conceptually, {\bf continuous} functions in your calculus class. When the function $f: \R \rightarrow \R$, this amounts to $f$ being drawn from without lifting the pen from the paper. How can one write precisely what it means for a function to be continuous, in a way that can be proven? For the remainder of the notes, we will assume that the sets $\X \sse \R$ and $\Y \sse \R$.
+\begin{defi}[Continuous function]
+    A function $f: \X \rightarrow \Y$ is called continuous at point $x_0 \in \X$ if for any $\e > 0$, there is a $\delta > 0$ (dependent on $\e$ and $x_0$), such that
+    \begin{align*}
+        |x - x_0| < \delta \implies |f(x) - f(x_0)| < \e
+    \end{align*}
+    $f$ is called continuous if it is continuous at any points $x_0 \in \X$.
+\end{defi}
+This is just another ``you give me an $\e$, I give you a $\delta$" type of definition, and the proofs are all the same style. Given an $\e$, you must compute or show non-constructively the existence of such a $\delta$.
+\begin{exm}
+    Prove that the $f(x) = 3x$ is continuous.
+\end{exm}
+\begin{proof}
+    Take any $x_0$, and $\e > 0$. Let $\delta = \frac{\e}{3}$.
+    \begin{align*}
+        |f(x) - f(x_0)| = |3x - 3x_0| = 3|x - x_0| < 3\delta = \e
+    \end{align*}
+\end{proof}
+The following is a more involved example, where the choice of $\delta$ must depend on $x_0$.
+\begin{exm}
+    Prove that $f(x) = \frac{1}{x}$ on $\X = \{x : x > 0\}$ is continuous.
+\end{exm}
+\begin{proof}
+    Take any $x_0$, and $\e > 0$. Let's work backwards.
+    \begin{align*}
+        |f(x) - f(x_0)| = \frac{|x_0 - x|}{x x_0} 
+    \end{align*}
+    The top will be bounded by whatever $\delta$ we choose, but the bottom will be pesky, as it can be arbitrarily small (remember that $\delta$ cannot depend on $x$, only $x_0$). First, we will put a closeness restriction on any $x$ that we consider. If we ensure that $\delta < \frac{x_0}{2}$, then this means that $|x - x_0| < \delta \implies x > \frac{x_0}{2}$ (try drawing this on the positive number line). Keeping that in mind, let's see where we get.
+    \begin{align*}
+        \frac{|x_0 - x|}{x x_0} < \frac{2|x_0 - x|}{x_0^2}
+    \end{align*}
+    Now we are in a good spot. If we also have that $\delta < \frac{\e x_0^2}{2}$, then
+    \begin{align*}
+        \frac{2|x_0 - x|}{x_0^2} < \frac{2 x_0^2 \e}{2 x_0^2} = \e
+    \end{align*}
+    To ensure both conditions on $\delta$, let $\delta = \frac{1}{2} \min\{\frac{x_0}{2}, \frac{\e x_0^2}{2}\}$ and we are done.
+\end{proof}
+
+\section{January 22, 2020}
+
+We will start by showing one of the most important properties of continuous functions.
+\begin{thm}
+    Let $f: \X \rightarrow \R$ be a continuous function. Let sequence $(x_n) \rightarrow x_0 \in \X$, with each $x_n \in \X$. Then $(f(x_n)) \rightarrow f(x_0)$ as $n \rightarrow \infty$.
+\end{thm}
+Before we show this, try to think of a negative example.
+\begin{proof}
+    Take any $\e > 0$. Let $\delta > 0$ be the number so that $|x - x_0| < \delta \implies |f(x) - f(x_0)| < \e$. We are assured of its existence because of the continuity of $f$, in particular at the point $x_0$. Then, let $N$ be large enough such that $|x_n - x_0| < \delta$ for $n \geq N$ (we know that there is such an $N$ because $x_n \rightarrow x$). Then, we have $|f(x_n) - f(x_0)| < \e$ for all $n \geq N$.
+\end{proof}
+
+For the following domains and codomains, assume all are subsets of $\R$.
+\begin{defi}[Inverse Image or Preimage]
+    Let $f: \X \rightarrow \Y$ be a function. Let $B \sse \Y$ be a set. $f^{-1}(B) := \{x: f(x) \in B\}$ is called in inverse image (or preimage) of $f$ at $B$.
+\end{defi}
+\begin{exm}
+    Prove that $f^{-1}(B^c) = (f^{-1}(B))^c$.
+\end{exm}
+\begin{proof}
+    \begin{align*}
+        x \in  f^{-1}(B^c) \iff f(x) \in B^c \iff f(x) \notin B \iff x \notin f^{-1}(B) \iff x \in (f^{-1}(B))^c
+    \end{align*}
+\end{proof}
+
+\begin{thm}
+    Let $f: \X \rightarrow \Y$ be a continuous function. Let $B \sse \Y$ be open. Then $f^{-1}(B)$ is open.
+\end{thm}
+\begin{proof}
+    Let $x_0 \in f^{-1}(B)$. We must show that there is some $\delta > 0$ such that $(x_0 - \delta, x_0 + \delta) \sse f^{-1}(B)$. We know that $f(x_0) \in B$ and that $B$ is open. Thus, there is an $\e > 0$ such that $(f(x_0) - \e, f(x_0) + \e) \sse B$. We know that by the definition of continuity, there there must exist a $\delta > 0$ such that TO DO. Any $x \in (x_0 - \delta, x_0 + \delta)$ has $f(x) \in (f(x_0) - \e, f(x_0)) \in B$, meaning that $(x_0 - \delta, x_0 + \delta) \in f^{-1}(B)$. Thus, $f^{-1}(B)$ is open.
+\end{proof}
+
+\begin{thm}
+    Let $f: \X \rightarrow \Y$ be a continuous function. Let $B \sse \Y$ be closed. Then $f^{-1}(B)$ is closed.
+\end{thm}
+\begin{proof}
+    \begin{align*}
+        B \text{ closed} \implies B^c \text{ open} \implies f^{-1}(B^c) \text{ open} \implies (f^{-1}(B))^c \text{ open} \implies f^{-1}(B) \text{ closed}
+    \end{align*}
+\end{proof}
+
+\begin{thm}
+    Let $f: \X \rightarrow \Y$ be a continuous function. Let $A \sse \X$ be compact. Then $f(A)$ is compact.
+\end{thm}
+\begin{proof}
+    Take any $(f(x_n))$, a sequence in $f(A)$. We must show that it has a convergent subsequence. We know that by compactness of $A$, that the sequence $(x_n)$ has a convergent subsequence, say $(x_{n_k}) \rightarrow x \in X$ (as $k \rightarrow \infty$). By continuity, the subsequence $(f(x_{n_k})) \rightarrow f(x) \in f(A)$. $(f(x_{n_k}))$ is clearly a subsequence of $(f(x_n))$ that converges in $f(A)$. Thus $f(A)$ is compact.
+\end{proof}
+
+The concept of continuity can be described alternatively by a ring that must slide across the length of the function without changing its orientation (See Figure \ref{fig:cont}). We will give a name to the types of functions who have the property that the width of the ring ($2\delta)$) does not depend on the center point $x_0$.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.494\linewidth]{figures/uniform.png}
+    \includegraphics[width=0.494\linewidth]{figures/not_uniform.png}
+    \caption{A pictorial characterization of continuity whether a ring of height $2\e$ and width $2\delta$ could slide along the entire function, without turning, for every $\e$. If $\delta$ must change as this happens, the the function is only continuous. In the right example, $\delta$ must get smaller as $x$ gets large in order for the ring to continue sliding. In the case that $\delta$ can stay constant, as in the left example, then the function is uniformly continuous.}
+    \label{fig:cont}
+\end{figure}
+\begin{defi}
+    A function $f: \X \rightarrow \Y$ is uniformly continuous if for every $\e > 0$, there is a $\delta > 0$ (dependent only on $\e$) such that for any $x_1, x_0 \in \X$,
+    \begin{align*}
+        |x_0 - x_1| < \delta \implies |f(x_0) - f(x_1)| < \e
+    \end{align*}
+\end{defi}
+Uniform continuity describes those functions that do not change too rapidly in some interval. $f(x) = \frac{1}{x}$ is not uniformly continuous, as any ring would eventually ``crash" into the function if slide close enough to $x = 0$.
+\begin{exm}
+    Provide an example of a function that is unbounded but still uniformly continuous.
+\end{exm}
+$f(x) = x$ does the trick here. Letting $\delta = \e$ satisfies the definition.
+\begin{exm}
+    Provide an example of a function that is continuous and bounded but not uniformly continuous.
+\end{exm}
+In this case, we look to functions that oscillate at an arbitrarily large speed. Take $f(x) = \sin \frac{1}{x}$. As $x$ gets close to 0, the functions oscillates such that no ring could slide close to that region. Try plotting the function to confirm this.
+
+We will end with a problem that allows us to practice the definition of uniform continuity by negating it.
+\begin{exm}
+    Prove that $f(x) = \frac{1}{x}$ for $x > 0$ is not uniformly continuous.
+\end{exm}
+\begin{proof}
+    We want to show that there is some $\e > 0$, such that for all $\delta > 0$, there exist $x_0, x_1 \in \X$ such that $|x_0 - x_1| < \delta$, but $|f(x_0) - f(x_1)| \geq \e$. Note that $x_0, x_1$ can and will likely depend on $\delta$. Unravelling the second condition, we have
+    \begin{align*}
+        |f(x_0) - f(x_1)| = \frac{|x_0 - x_1|}{x_0 x_1}
+    \end{align*}
+    It seems intuitively that we can blow up this difference by making $x_0$ and $x_1$ small enough. Because we must have $|x_0 - x_1| < \delta$, let us fix $x_0$ and let $x_1 = x_0 + \frac{\delta}{2}$. So, we are guaranteed the first condition. Unravelling again,
+    \begin{align*}
+        \frac{|x_0 - x_1|}{x_0 x_1} = \frac{\delta}{2x_0(x_0 + \frac{\delta}{2})} = \frac{\delta}{2x_0^2 + \delta x_0} \overset{\text{want}}{\geq} 1
+    \end{align*}
+    We must find $x_0$ such that
+    \begin{align*}
+        2x_0^2 + \delta x_0 - \delta \leq 0
+    \end{align*}
+    This is a concave up parabola, so finding where it is less than zero is equivalent to finding its roots, and choosing any $x_0$ in between those roots. The discriminant is $\delta^2 - 4(2)(-\delta) = \delta^2 + 8\delta > 0$, so we are assured of real roots. Choose $x_0$ between these roots and we are done.
+\end{proof}
+
+We present one more theorem without proof, but try to motivate this yourself with a picture and some examples. You can also look up a proof in a text and see if you are able to understand all of the steps clearly.
+\begin{thm}
+    Let $f: \X \rightarrow \Y$ be continuous, with $\X$ compact. Then $f$ is uniformly continuous.
+\end{thm}
+
+\section{January 23, 2020}
+
+Today we will debrief by going over what we covered in class, assessing our objectives and whether we met them, and taking/giving feedback.
+
+\subsection*{Content}
+
+In order to prove theorems, lemmas, exercises and the like, we must have content and definitions with which to work with. My mental view of the course two parts, each with a set of content with which to practice certain logic:
+\begin{itemize}
+    \item {\bf Part I: Fundamentals}
+    \begin{itemize}
+        \item Content: Definitions, Notation, Sets, Even/Odd Numbers, Prime/Composite Numbers.
+        \item Logic: Direct/Contrapositive Proof, Proof by Contradiction, Proof by Induction
+        \item Skills: Basic application of definitions and algebra to write your own proofs.
+    \end{itemize}
+    \item {\bf Part II: Rigorous Proof-Writing}
+    \begin{itemize}
+        \item Content: Infinity, Sequences, Limits, Cauchy Sequences, Open/Closed/Compact sets, Continuous and Uniformly Continuous functions.
+        \item Logic: $\e-\delta$-style proofs.
+        \item Skills: Applying critical thinking to understand new definitions and more complex arguments.
+    \end{itemize}
+\end{itemize}
+
+By $\e-\delta$-style proofs, we mean all those that involve showing that ``for all something, there is a something" to satisfy a definition. For example
+\begin{itemize}
+    \item For all $\e > 0$, there is an $N$ such that ... (limit of a sequence)
+    \item For all $x \in A$,  there is an $\e > 0$ such that ...(open set)
+    \item For all sequences, there is a subsequence such that ... (compact set)
+    \item For all $\e > 0$, there is a $\delta > 0$ such that ... (continuity)
+\end{itemize}
+These types of arguments make up a lot of the fields that deal with limits and infinity, and I will use $\e-\delta$ to describe all of them. In the examples that we have seen, coming up with the ``$\delta$" (whatever that means for the given problem) given any $\e$ usually comes down to:
+\begin{itemize}
+    \item Computing it. (Show that $(\frac{e^{-n}})$ converges to 0. Show that $(0, 1)$ is open. Show that $f(x) = \frac{1}{x}$ is continuous.)
+    \item Non-constructively showing that it must exist. (Subsequence of a convergent sequence converges. Limit is carried through a continuous function.)
+    \item Assuming that it does not exist, and contradicting. (If a set is open, its complement is closed.)
+\end{itemize}
+While I believe most problems you run into can be colved by iterating through these core principles, there are additional strategies that we sometimes used.
+\begin{itemize}
+    \item Adding additional constraints to the problem. (Provide an example of a perfect number less than 28, homework 2 problem 4.)
+    \item Split into cases. (Every sequences has a monotone subsequence, homework 1 problem 2.)
+    \item Write the beginning, then end, then middle of the proof. (Show that a compact set is closed.)
+\end{itemize}
+
+\subsection*{Objectives}
+
+My broad goals for you all was to approach the ability to:
+\begin{itemize}
+    \item Think linearly and logically.
+    \item Absorb complicated definitions through symbols, examples, and pictures.
+    \item Argue with clarity and style.
+    \item Learn independently.
+\end{itemize}
+I believe that all of these contribute to successful mathematics education, and if each of these improved a little over the course of three weeks, I would be happy with our progress.
+
+\subsection*{Feedback}
+
+I personally felt that the amount of material was a little bit ambitious, and what I wanted was to give more practice and have you read things before hand. I was kind of deciding which content to have as we were going along - as you can imagine, content is a lot deeper in a real analysis course and there were a lot of decisions made as to what content to keep to give enough practice with proof-writing. Now that I am more well accustomed to the pace of this material with freshmen and sophomores, I think that aspect can go a little smoother. Based on your feedback both in class on from Homework 2, we agreed on the following adjustments.
+\begin{itemize}
+    \item Speed: Slightly slower on pace.
+    \item Material / Amount of practice: Slightly less material and more practice. One useful suggestion was a daily problem after each lecture, that we go over together the next day.
+    \item Execution: Students seemed generally happy with presentation of material, as well as being called on to work through problems on the board. Another great suggestion was a minute or so to think about a new problem before taking volunteers to come up to the board.
+\end{itemize}
+
+Another general theme of feedback regarding the second half of the course was that while students could eventually understand and work through proofs that were given to them, they were unsure about how to decide which strategies or directions to pursue on their own. While I do think there is no algorithmic road map per se, iterating through the strategies we covered until one works is usually how you start. As you get more mathematical experience, you start having gut feelings as to which directions are going to be more fruitful than others, which previous results seem important to apply, etc.
+
+\subsection*{Beyond this Class}
+
+As for the material that we covered, I suggest going through the two textbooks for more problems. The Scheinerman book has a really clear exposition. I suggest going through each of the twenty or so proof templates that it has, and do a few examples associated with each one. This will branch our general approach to a few more specialized strategies that you can try in the future. The Aksoy book also has problems relating to the Part II of the course, that are a little harder than the ones that we covered. It has detailed solutions for every problem.
+
+I have spent most of my time in the realm of applied mathematics and statistics, a little less in computer science, and less still in electrical engineering, so my suggestions will be a little biased towards those. If you want to improve your core mathematical skills, I recommend taking the actual Discrete Mathematics AMS course, the Honors Real Analysis I course in Math, Introduction to Proofs with Dr. Riehl, also in Math. As for other advanced courses with a proof-writing/theoretical component: 
+\begin{itemize}
+    \item Machine Learning (Arora)
+    \item Algorithms (Dinitz)
+    \item Matrix Analysis (Fishkind)
+    \item Harmonic Analysis (Maggioni)
+    \item Signals, Systems, and Learning (Venkataraman)
+    \item Kinematics and Dynamics of Robots
+    \item Dynamical Systems
+    \item Partial Differential Equations
+\end{itemize}
+I suggested some professors who I know to be good to take these courses with. Working in statistics and machine learning, I absolutely run into proof-writing in my daily work (proving that algorithms/estimation procedures/hypothesis tests work in a certain way, etc.). If these topics interest you, and you would like to follow them into future coursework and research, let me know and we can discuss!
+
+\subsection*{Thank you}
+
+Thanks to you all for your helpful feedback and for taking this course. It was very education for me as well, and wish you all the best in the rest of your mathematical careers!
 
 % BIBLIOGRAPHY AND ACKNOWLEDGEMENTS
 % \paragraph{Acknowledgement} Thank you to the students that attended my section this semester. Your feedback has been extremely helpful, and I hope to see you all around in the spring! Good luck on the final!
