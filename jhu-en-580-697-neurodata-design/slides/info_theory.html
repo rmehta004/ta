@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>info_theory</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="fonts/quadon/quadon.css">
+  <link rel="stylesheet" href="fonts/gentona/gentona.css">
+  <link rel="stylesheet" href="slides_style.css">
+  <script type="text/javascript" src="assets/plotly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <textarea id="source">
+
+
+name:opening
+
+
+**Information Theory Primer**<br>
+Ronak Mehta  <br>
+NeuroData Lunch Meeting: 2/19/2020 <br>
+
+
+<!-- {[BME](https://www.bme.jhu.edu/),[ICM](https://icm.jhu.edu/),[CIS](http://cis.jhu.edu/),[KNDI](http://kavlijhu.org/)}@[JHU](https://www.jhu.edu/)  -->
+
+
+<a href="https://neurodata.io"><img src="images/neurodata_purple.png" style="height:430px;"/></a>
+
+
+<!-- <img src="images/funding/jhu_bme_blue.png" STYLE="HEIGHT:95px;"/> -->
+<!-- <img src="images/funding/KNDI.png" STYLE="HEIGHT:95px;"/> -->
+<!-- <font color="grey"></font> -->
+.foot[Slides Format: Joshua T. Vogelstein | <http://neurodata.io/talks>]
+
+
+---
+
+### Purpose of this Talk
+
+1. Definitions of core information-theoretic quantities. 
+2. Interpretations in communication.
+3. Applications to statistics and mAchiNE LeaRniNg.
+
+.center[<img src="images/ai.jpg" style="width:450px;"/>]
+
+---
+class: middle, inverse
+
+## .center[Motivation]
+
+---
+
+## Information
+
+
+$A$ is a random event. Can we measure the amount of information gained from knowledge of $A$?
+
+--
+
+**Criterion 1:** More surprising or rare events contribute more information.
+
+--
+
+**Criterion 2:** Information from independent events is additive.
+
+--
+
+**Criterion 3:** Information varies continuously (in some sense) as the event changes.
+
+---
+
+## Information
+
+
+Let $-\log p(A)$ be the information given by $A$.
+
+--
+
+**Criterion 1:** $p(A)$ is low $\rightarrow$ $-\log p(A)$ is high. 
+
+--
+
+**Criterion 2:** $A, B$ independent $\rightarrow$ 
+$$- \log p(A, B) = -\log (p(A) \cdot p(B))$$
+$$= (-\log p(A)) + (-\log p(B))$$
+
+--
+
+**Criterion 3:** $\log(\cdot)$ is a continuous function in the probability. 
+
+---
+class: middle, inverse
+
+## .center[Building Blocks]
+
+---
+
+## Entropy
+
+Random variable $Y: \Omega \rightarrow \mathcal{Y}$. 
+
+--
+
+$p(y) = Pr(Y = y)$.
+
+--
+
+The **entropy** $H(Y)$ (in bits) is the average information (or average surprise) from an observation of $Y$.
+
+--
+
+$$H(Y) = \mathbb{E}\_Y[-\log\_2 p(Y)] = -\sum\_{y \in \mathcal{Y}} p(y) \log\_2 p(y)$$
+
+---
+
+
+## The Horse Race
+
+Say there is a race with four horses, $A$, $B$, $C$, and $D$.
+
+--
+
+I want to tell Hayden, who lives in China, who won the race. I can only communicate in binary.
+--
+
+The probabilities of victory are $A: 100\%, B: 0\%, C: 0\%, D: 0\%$.
+
+--
+
+Let $A = 0, B = 1, C = 10, D = 11$ is a possible encoding. How many bits (number of binary values) do I need (on average) to tell him the winner?
+
+---
+
+## The Horse Race
+
+If the probabilities are $A: 50\%, B: 50\%, C: 0\%, D: 0\%$, how many bits do we need on average?
+
+--
+
+**Answer:** $0.5 \cdot 1 + 0.5 \cdot 1 + 0 \cdot 2 + 0 \cdot 2 = 1$.
+
+--
+
+If the probabilities are $A: 50\%, B: 25\%, C: 12.5\%, D: 12.5\%$, how many bits do we need on average?
+
+--
+
+**Answer:** $0.5 \cdot 1 + 0.25 \cdot 1 + 0.125 \cdot 2 + 0.125 \cdot 2 = 1.25$.
+
+--
+
+If the probabilities are $A: 25\%, B: 25\%, C: 25\%, D: 25\%$, how many bits do we need on average?
+
+--
+
+**Answer:** $0.25 \cdot 1 + 0.25 \cdot 1 + 0.25 \cdot 2 + 0.25 \cdot 2 = 1.5$.
+
+---
+
+## The Horse Race
+
+In all of these cases, we encoded the outcomes optimally, in that we assigned large bit strings to low probability winners. We needed more bits as the distribution became more spread out, as the large bit string outcomes appeared more often.
+
+--
+
+Letting $Y$ be the random variable representing the winner of the race. It turns out that the minimum average number of bits required to communicate $Y$ is always greater than or equal to $H(Y)$.
+
+--
+
+In the previous cases, because all the probabilities were powers of 2, we actually achieved $H(Y)$ in each case.
+
+---
+## Entropy
+
+Entropy thus measures **uncertainty** in a distribution. The more uncertainty, the more surprise in each outcome. 
+
+--
+
+.center[<img src="images/binary_entropy_plot.png" style="width:300px;"/>]
+
+For a coin flip, the entropy is maximized at $p = \frac{1}{2}$. For a $K$ class multinomial, it is maximized at $p_k = \frac{1}{K}$ for all $k \in [K]$.
+
+---
+## Entropy
+
+One final interpretation is the average number of "yes/no" questions would have to surmise the value of the random variable. (Assuming the questions were optimally chosen.)
+
+--
+
+This is the same as the average depth of the decision tree required to figure out Y.
+
+---
+
+## Cross Entropy
+
+What if $Y \sim p$, but I think that $Y \sim q$. My coding scheme will require however many bits it does on average to communicate $Y$.
+$$H(p, q) = \ \mathbb{E}\_{Y \sim p}[-\log \color{red}{q} (Y)]$$ 
+$$ = -\sum\_{y \in \mathcal{Y}}p(y)\log \color{red}{q}(y)$$ 
+
+--
+
+This is called the **cross entropy** of $p$ and/to $q$. Letting $H(p) = H(Y)$ if $Y \sim p$,
+$$H(p, q) \geq H(p)$$
+
+---
+
+## Conditional Entropy
+
+What if there is some auxilary random variable $X: \Omega \rightarrow \mathcal{X}$, such as the number of fans at the race?
+
+--
+
+Let $H(Y \color{red}{\mid X = x}) = -\sum\_{y \in \mathcal{Y}} p(y \color{red}{\mid x}) \log p(y \color{red}{\mid x})$. Note that this is a function of $x$.
+
+---
+
+## Conditional Entropy
+
+**Conditional entropy** measures the average number of bits needed to communicate $Y$ when $X$ is known, averaged over $X$.
+$$H(Y \mid X) =\ \mathbb{E}\_{X'} [H(Y \mid X = X')] $$
+
+--
+
+$$ =\ \mathbb{E}\_X \mathbb{E}\_{Y \mid X}[-\log p(Y \mid X)] $$
+
+--
+
+$$ = -\sum\_{x \in \mathcal{X}} p(x) \sum\_{y \in \mathcal{Y}} p(y \mid x) \log p(y \mid x)$$
+
+--
+
+$$ = -\sum\_{x, y} p(y, x) \log p(y \mid x)$$
+
+<!--  = -\sum\_{x \in \mathcal{X}} p(x) \sum\_{y \in \mathcal{Y}} p(y \mid x) \log p(y \mid x) -->
+
+---
+
+## Conditioning Helps
+
+$H(Y \mid X) \leq H(Y)$
+
+--
+
+This does not mean that $H(Y \mid X = x) \leq H(Y)$ for all $x \in \mathcal{X}$. It helps **on average**.
+
+---
+
+## Chain Rule
+
+Joint probability is multiplicative: $p(X, Y) = p(X)\cdot p(Y \mid X)$
+
+--
+
+Joint entropy is additive: $H(X, Y) = H(X) + H(Y \mid X)$
+
+--
+
+For $n$ random variables:
+
+$$H(Y\_1, ..., Y\_n) = H(Y\_1) + H(Y\_2 \mid Y\_1) + ... + H(Y\_n \mid Y\_1, ..., Y\_{n-1})$$
+$$ = \sum\_{i=1}^n H(Y\_i \mid Y\_1, ..., Y\_{i-1})$$
+
+---
+class: middle, inverse
+
+
+## .center[Consequences]
+
+
+---
+
+## KL-Divergence
+
+The **Kullback-Liebler divergence** (also called **relative entropy**) of $q$ from $p$ ($p$ to $q$) is:
+$$D(p \mid\mid q) = H(p, q) - H(p)$$
+
+--
+
+$$ = \ \mathbb{E}\_{Y \sim p}[(-\log q(Y)) - (- \log p(Y))]$$
+
+--
+
+$$ = -\sum\_{y \in \mathcal{Y}} p(y) \log \frac{q(y)}{p(y)}$$
+$$ = \sum\_{y \in \mathcal{Y}} p(y) \log \frac{p(y)}{q(y)}$$
+
+--
+
+Note that KL is **not symmetric**.
+
+---
+
+## Maximum-Likelihood
+
+If $Y\_1, ..., Y\_n \sim p\_{\theta}$ i.i.d., then the MLE for $\theta$ solves:
+
+$$\min\_{\theta} \prod\_{i=1}^n p\_{\theta}(Y_i)$$
+
+--
+
+$$\min\_{\theta} \sum\_{i=1}^n \color{red}{\frac{1}{n}}  \color{red}{\log} p\_{\theta}(Y_i)$$
+
+--
+
+$$\min\_{\theta} \ \mathbb{E}\_{Y \sim \hat{p}\_n} [\log p\_{\theta}(Y)]$$
+
+--
+
+$$\min\_{\theta} H(\hat{p}\_n, p\_{\theta})$$
+
+--
+
+$$\min\_{\theta} H(\hat{p}\_n, p\_{\theta}) \color{red}{- H(\hat{p}\_n)}$$
+
+--
+
+$$\min\_{\theta} D(\hat{p}\_n \mid \mid p\_{\theta})$$
+
+---
+
+## Arbitrary Loss Functions
+
+In supervised learning, we pick the function $h\_{\theta}$ that minimizes $\frac{1}{n} \sum\_{i=1}^n l(h\_\theta(X_i), Y_i)$.
+
+--
+
+$$l(y, y') = (y - y')^2 \rightarrow Y \mid X \sim \mathcal{N}(h\_\theta(X), \sigma^2)$$
+
+--
+
+$$l(y, y') = |y - y'| \rightarrow Y \mid X \sim \text{Laplace}(h\_\theta(X), b)$$
+
+--
+
+$$l(y, y') = \mathbb{I}(y \neq y') \rightarrow Y \mid X \sim \text{Bern}(h\_\theta(X))$$
+
+--
+
+In these cases, supervised learning **is** maximimum-likelihood estimation **is** minimizing $ D(\hat{p}\_n \mid \mid p\_{\theta})$.
+
+---
+
+## Nonsymmetry
+
+What is the difference between $D(p \mid\mid q)$ and $D(q \mid\mid p)$? Consider a bimodal $p$, and minimizing either quantity over $q$.
+
+.center[<img src="images/kl.png" style="width:650px;"/>]
+
+---
+
+## Nonsymmetry
+
+$ \min\_{\theta} D(\hat{p}\_n \mid \mid p\_{\theta}) \rightarrow$ (possibly) bad extrapolation.
+
+$ \min\_{\theta} D(p\_{\theta} \mid \mid \hat{p}\_n) \rightarrow$ (possibly) bad intrapolation.
+
+---
+
+## Mutual Information
+
+The **mutual information** between $X$ and $Y$ is defined as:
+$$I(X; Y) = H(Y) - H(Y \mid X)$$
+
+--
+
+$$ = H(X) - H(X \mid Y)$$
+
+--
+
+$$ = D(p\_{XY} \mid \mid p\_X \cdot p\_Y)$$
+
+--
+
+$$ = \mathbb{E}\_{X'}[D(p\_{Y \mid X = X'} \mid \mid p\_Y)]$$
+
+---
+
+## Chain Rule
+
+TODO.
+
+---
+
+## Classification
+
+Say $g: \mathcal{X} \rightarrow \mathcal{Y}$, and 
+$L^* = \min\_{g} Pr(g(X) \neq Y)$. Then:
+
+--
+
+$$L^* \leq 1 - \frac{1}{2^{H(Y \mid X)}}$$
+
+$$= 1 - \frac{1}{2^{H(Y) - I(Y; X)}}$$
+
+---
+
+## Data Processing Inequality
+
+If $T: \mathcal{X} \rightarrow \mathcal{X'}$ is **any transformation** of the data, then:
+
+$$I(Y; X) \geq I(Y; T(X))$$
+
+--
+
+If $T(X)$ is a sufficient statistic, then:
+
+$$I(Y; X) = I(Y; T(X))$$
+
+This has applications to data compression for downstream classification.
+
+---
+
+## Hypothesis Testing
+
+Consider the two-sample test:
+
+$$H_0: p = p\_0$$
+$$H_0: p = p\_1$$
+
+Let $\beta\_n$ be the probability of Type II error, constrained by level $\alpha$. Then,
+
+--
+
+$$\beta\_n > (1 - 2 \alpha) 2^{-n (D(p\_0 \mid\mid p\_1) + \alpha)}$$
+
+---
+class: middle, inverse
+
+
+## .center[Relevance]
+
+
+---
+
+## Hypothesis Testing
+
+Estimate mutual information with Uncertainty Forest$^{\text{TM}}$, and estimate null distribution with permutation test.
+
+--
+
+Exact equivalence gives us a two-sample test as well. **Question:** How do we interpret the test statistic for the two-sample test? Is it related to KL?
+
+---
+## Feature Importance
+
+Can information-theoretic quantities, such as $I(Y; X\_j)$ or $I(Y; X\_j \mid X\_{-j})$ tell us the importance of feature $X\_j$? (Mike's talk)
+
+---
+
+## Reading
+
+Will update later.
+
+---
+class: middle, inverse
+
+
+## .center[Questions?]
+
+
+---
+class: middle, inverse
+
+
+## .center[That's a wrap!]
+
+
+</textarea>
+  <!-- <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"></script> -->
+  <script src="remark-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  <script type="text/javascript">
+    var options = {};
+    var renderMath = function () {
+      renderMathInElement(document.body);
+      // or if you want to use $...$ for math,
+      renderMathInElement(document.body, {
+        delimiters: [ // mind the order of delimiters(!?)
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false },
+        ]
+      });
+    }
+    var slideshow = remark.create(options, renderMath);
+
+  </script>
+</body>
+
+</html>
