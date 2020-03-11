@@ -19,7 +19,7 @@ name:opening
 
 **Information Theory Primer**<br>
 Ronak Mehta  <br>
-NeuroData Lunch Meeting: 2/19/2020 <br>
+NeuroData Lunch Meeting: 2/19/2020 (Last Revised 3/10/2020)<br>
 
 
 <!-- {[BME](https://www.bme.jhu.edu/),[ICM](https://icm.jhu.edu/),[CIS](http://cis.jhu.edu/),[KNDI](http://kavlijhu.org/)}@[JHU](https://www.jhu.edu/)  -->
@@ -40,9 +40,7 @@ NeuroData Lunch Meeting: 2/19/2020 <br>
 
 1. Definitions of core information-theoretic quantities. 
 2. Interpretations in communication.
-3. Applications to statistics and mAchiNE LeaRniNg.
-
-.center[<img src="images/ai.jpg" style="width:450px;"/>]
+3. Applications to statistics and machine learning.
 
 ---
 class: middle, inverse
@@ -96,6 +94,81 @@ class: middle, inverse
 
 ---
 
+
+## The Horse Race
+
+Say there is a race with four horses, $A$, $B$, $C$, and $D$.
+
+--
+
+I want to tell Hayden, who lives in across the world, who won the race. I can only communicate in a **binary encoding**.
+
+---
+
+## The Horse Race: Encodings
+
+An **encoding** is a sequence of bits (0 or 1) that identifies symbols of an alphabet. You must know by the value of the bit string whether the symbol is complete.
+
+--
+
+For example $A = 0, B = 1, C = 10, D = 11$ is **NOT** a valid encoding, as after receiving $1$, Hayden is unsure whether the sender means $B$, or will continue on to complete symbols $C$ or $D$.
+
+---
+
+## The Horse Race: Encodings
+
+An encoding is valid if and only if it is representable by a decision tree, in which the symbols are leaf nodes.
+
+.center[<img src="images/Binary-Decision-Tree.png" style="width:700px;"/>]
+
+---
+
+## The Horse Race: Encodings
+
+Consider the encoding: $A = 1110, B = 110, C = 10, D = 0$.
+
+--
+
+The probabilities of victory are $A: 100\%, B: 0\%, C: 0\%, D: 0\%$. What is the average number of bits needed to communicate the winner?
+
+--
+
+**Answer:** $1 \cdot 4 + 0 \cdot 3 + 0 \cdot 2 + 0 \cdot 1 = 4$.
+
+--
+
+What if the probabilities are $A: 50\%, B: 50\%, C: 0\%, D: 0\%$?
+
+--
+
+**Answer:** $0.5 \cdot 4 + 0.5 \cdot 3 + 0 \cdot 2 + 0 \cdot 1 = 3.5$.
+
+--
+
+What if the probabilities are $A: 25\%, B: 25\%, C: 25\%, D: 25\%$?
+
+--
+
+**Answer:** $0.25 \cdot 4 + 0.25 \cdot 3 + 0.25 \cdot 2 + 0.25 \cdot 1 = 2.5$.
+
+---
+
+## The Optimal Encoding
+
+Because sending and storing data is expensive, we wish to send the minimal amount of bits. What is the optimal encoding, in the send of minimizing the average number of bits sent?
+
+Letting $A = 00, B = 01, C = 10, D = 11$, we achieve the best average, which is of 2. Note that this is not unique.
+
+--
+
+Intuitively, an optimal encoding should assign short bit strings to high probability symbols. (See Cover & Thomas Example 1.1.2 for a variable-length example.)
+
+--
+
+The winner of the race can be an analogy for any random variable $Y$. How many bits on average do we need to communicate the value of $Y$?
+
+---
+
 ## Entropy
 
 Random variable $Y: \Omega \rightarrow \mathcal{Y}$. 
@@ -113,64 +186,6 @@ The **entropy** $H(Y)$ (in bits) is the average information (or average surprise
 $$H(Y) = \mathbb{E}\_Y[-\log\_2 p(Y)] = -\sum\_{y \in \mathcal{Y}} p(y) \log\_2 p(y)$$
 
 ---
-
-
-## The Horse Race
-
-Say there is a race with four horses, $A$, $B$, $C$, and $D$.
-
---
-
-I want to tell Hayden, who lives in China, who won the race. I can only communicate in binary.
---
-
-The probabilities of victory are $A: 100\%, B: 0\%, C: 0\%, D: 0\%$.
-
---
-
-Let $A = 0, B = 1, C = 10, D = 11$ is a possible encoding. How many bits (number of binary values) do I need (on average) to tell him the winner?
-
----
-
-## The Horse Race
-
-If the probabilities are $A: 50\%, B: 50\%, C: 0\%, D: 0\%$, how many bits do we need on average?
-
---
-
-**Answer:** $0.5 \cdot 1 + 0.5 \cdot 1 + 0 \cdot 2 + 0 \cdot 2 = 1$.
-
---
-
-If the probabilities are $A: 50\%, B: 25\%, C: 12.5\%, D: 12.5\%$, how many bits do we need on average?
-
---
-
-**Answer:** $0.5 \cdot 1 + 0.25 \cdot 1 + 0.125 \cdot 2 + 0.125 \cdot 2 = 1.25$.
-
---
-
-If the probabilities are $A: 25\%, B: 25\%, C: 25\%, D: 25\%$, how many bits do we need on average?
-
---
-
-**Answer:** $0.25 \cdot 1 + 0.25 \cdot 1 + 0.25 \cdot 2 + 0.25 \cdot 2 = 1.5$.
-
----
-
-## The Horse Race
-
-In all of these cases, we encoded the outcomes optimally, in that we assigned large bit strings to low probability winners. We needed more bits as the distribution became more spread out, as the large bit string outcomes appeared more often.
-
---
-
-Letting $Y$ be the random variable representing the winner of the race. It turns out that the minimum average number of bits required to communicate $Y$ is always greater than or equal to $H(Y)$.
-
---
-
-In the previous cases, because all the probabilities were powers of 2, we actually achieved $H(Y)$ in each case.
-
----
 ## Entropy
 
 Entropy thus measures **uncertainty** in a distribution. The more uncertainty, the more surprise in each outcome. 
@@ -184,7 +199,10 @@ For a coin flip, the entropy is maximized at $p = \frac{1}{2}$. For a $K$ class 
 ---
 ## Entropy
 
-One final interpretation is the average number of "yes/no" questions would have to surmise the value of the random variable. (Assuming the questions were optimally chosen.)
+Let $b: \mathcal{Y} \rightarrow \mathcal{B}$ be an encoder, i.e. writes an observation of $Y$ as a bit string. Then,
+$$ \mathbb{E}\_{Y}[b(Y)] \geq H(Y) $$.
+
+Thus, the entropy gives a **lower bound** on the number of bits sent on average by the optimal encoder. The entropy can be achieved if all of the probabilities are (negative) powers of two.
 
 --
 
@@ -292,35 +310,35 @@ Note that KL is **not symmetric**.
 
 ## Maximum-Likelihood
 
-If $Y\_1, ..., Y\_n \sim p\_{\theta}$ i.i.d., then the MLE for $\theta$ solves:
+If $Y\_1, ..., Y\_n \sim p\_{\theta}$ i.i.d., and $\hat{p}\_n$ is the empircal distribution, then the MLE for $\theta$ solves:
 
-$$\min\_{\theta} \prod\_{i=1}^n p\_{\theta}(Y_i)$$
-
---
-
-$$\min\_{\theta} \sum\_{i=1}^n \color{red}{\frac{1}{n}}  \color{red}{\log} p\_{\theta}(Y_i)$$
+$$\text{arg} \max\_{\theta} \prod\_{i=1}^n p\_{\theta}(Y_i)$$
 
 --
 
-$$\min\_{\theta} \ \mathbb{E}\_{Y \sim \hat{p}\_n} [\log p\_{\theta}(Y)]$$
+$$\text{arg} \max\_{\theta} \sum\_{i=1}^n \color{red}{\frac{1}{n}}  \color{red}{\log} p\_{\theta}(Y_i)$$
 
 --
 
-$$\min\_{\theta} H(\hat{p}\_n, p\_{\theta})$$
+$$\text{arg} \min\_{\theta} -\mathbb{E}\_{Y \sim \hat{p}\_n} [\log p\_{\theta}(Y)]$$
 
 --
 
-$$\min\_{\theta} H(\hat{p}\_n, p\_{\theta}) \color{red}{- H(\hat{p}\_n)}$$
+$$\text{arg} \min\_{\theta} H(\hat{p}\_n, p\_{\theta})$$
 
 --
 
-$$\min\_{\theta} D(\hat{p}\_n \mid \mid p\_{\theta})$$
+$$\text{arg} \min\_{\theta} H(\hat{p}\_n, p\_{\theta}) \color{red}{- H(\hat{p}\_n)}$$
+
+--
+
+$$\text{arg} \min\_{\theta} D(\hat{p}\_n \mid \mid p\_{\theta})$$
 
 ---
 
 ## Arbitrary Loss Functions
 
-In supervised learning, we pick the function $h\_{\theta}$ that minimizes $\frac{1}{n} \sum\_{i=1}^n l(h\_\theta(X_i), Y_i)$.
+In supervised learning, we pick the function $h\_{\theta}$ that minimizes empirical risk: $\frac{1}{n} \sum\_{i=1}^n l(h\_\theta(X_i), Y_i)$.
 
 --
 
@@ -377,7 +395,17 @@ $$ = \mathbb{E}\_{X'}[D(p\_{Y \mid X = X'} \mid \mid p\_Y)]$$
 
 ## Chain Rule
 
-TODO.
+Consider the mutual information between $Y$ and the random pair variable $(X, Z)$.
+
+$$I(Y; X, Z) = I(Y; Z) + I(Y; X \mid Z)$$
+
+.center[where]
+
+$$I(Y; X \mid Z) = H(Y \mid Z) - H(H \mid X, Z)$$
+
+--
+
+$I(Y; X \mid Z)$ (conditional mutual information), is the additional information about $Y$ that is captured by $X$ and not by $Z$.
 
 ---
 
@@ -407,6 +435,10 @@ If $T(X)$ is a sufficient statistic, then:
 $$I(Y; X) = I(Y; T(X))$$
 
 This has applications to data compression for downstream classification.
+
+--
+
+What is $T$ sufficient for, in the statistical sense? Letting $Z = (X, Y)$, consider the infinite-dimensional parameter $\theta(F\_Z) = F\_{Y \mid Z}$. $T(Z) = T(X)$ (ignoring $Y$) is sufficient for $\theta$.
 
 ---
 
@@ -449,7 +481,12 @@ Can information-theoretic quantities, such as $I(Y; X\_j)$ or $I(Y; X\_j \mid X\
 
 ## Reading
 
-Will update later.
+Cover & Thomas (2006):
+- Chapter 1
+- Chapter 2
+- Chapter 8
+- Chapter 11
+- Chapter 17
 
 ---
 class: middle, inverse
